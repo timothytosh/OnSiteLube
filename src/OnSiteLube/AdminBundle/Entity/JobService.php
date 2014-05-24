@@ -113,9 +113,8 @@ class JobService
      */
     private $employees;
 
-  /**
-   * @ORM\ManyToOne(targetEntity="WorkOrder")
-   * @ORM\JoinColumn(name="WorkOrderId", referencedColumnName="id")
+   /**
+   * @ORM\OneToMany(targetEntity="WorkOrder", mappedBy="JobService")
    */
   private $workOrder;
 

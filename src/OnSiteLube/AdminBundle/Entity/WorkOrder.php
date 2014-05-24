@@ -54,8 +54,9 @@ class WorkOrder {
    */
   private $customerLocation;
 
-  /**
-   * @ORM\OneToMany(targetEntity="JobService", mappedBy="WorkOrder")
+   /**
+   * @ORM\ManyToOne(targetEntity="JobService")
+   * @ORM\JoinColumn(name="JobServiceId", referencedColumnName="id")
    */
   private $jobServices;
 
