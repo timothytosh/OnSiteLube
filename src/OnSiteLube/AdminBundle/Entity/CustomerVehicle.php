@@ -69,8 +69,14 @@ class CustomerVehicle
      * @ORM\Column(name="Engine", type="string", length=45)
      */
     private $engine;
-
-
+	
+	/**
+     * @var string
+     *
+     * @ORM\Column(name="Parking", type="string", length=255)
+     */
+    private $parking;
+	
     /**
      * Get id
      *

@@ -9851,3 +9851,13 @@ b82ce2,::1,GET,http://localhost/login?password=ttjlb2014&username=tim.tosh,14008
 095bf4,::1,GET,http://localhost/login?password=ttjlb2014&username=tim.tosh,1400889538,
 f815cf,::1,GET,http://localhost/dashboard,1400889539,
 ef5ae3,::1,GET,http://localhost/empSchedule?userAccountId=1,1400889540,
+22094e,::1,GET,http://localhost/logout,1400890578,
+50335b,::1,GET,http://localhost/login?password=ttjlb2014&username=tim.tosh,1400890585,10ec0b
+10ec0b,::1,GET,http://localhost/login?password=ttjlb2014&username=tim.tosh,1400890585,
+33d4bf,::1,GET,http://localhost/dashboard,1400890586,
+8c321e,::1,GET,http://localhost/empSchedule?userAccountId=1,1400890589,
+14cb13,::1,GET,http://localhost/,1400892765,
+ccce26,::1,GET,http://localhost/login?password=ttjlb2014&username=tim.tosh,1400892790,3b4d73
+3b4d73,::1,GET,http://localhost/login?password=ttjlb2014&username=tim.tosh,1400892790,
+1dea6e,::1,GET,http://localhost/dashboard,1400892791,
+6a9151,::1,GET,http://localhost/empSchedule?userAccountId=1,1400892793,
