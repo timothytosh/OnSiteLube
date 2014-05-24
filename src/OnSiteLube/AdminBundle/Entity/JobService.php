@@ -28,48 +28,6 @@ class JobService
    */
   private $vehicle;
 
-  /**
-   * @return mixed
-   */
-  public function getEmployees() {
-    return $this->employees;
-  }
-
-  /**
-   * @param mixed $employees
-   */
-  public function setEmployees($employees) {
-    $this->employees = $employees;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getVehicle() {
-    return $this->vehicle;
-  }
-
-  /**
-   * @param mixed $vehicle
-   */
-  public function setVehicle($vehicle) {
-    $this->vehicle = $vehicle;
-  }
-
-  /**
-   * @return mixed
-   */
-  public function getWorkOrder() {
-    return $this->workOrder;
-  }
-
-  /**
-   * @param mixed $workOrder
-   */
-  public function setWorkOrder($workOrder) {
-    $this->workOrder = $workOrder;
-  }
-
     /**
      * @var string
      *
@@ -113,8 +71,9 @@ class JobService
      */
     private $employees;
 
-   /**
-   * @ORM\OneToMany(targetEntity="WorkOrder", mappedBy="JobService")
+  /**
+   * @ORM\ManyToOne(targetEntity="WorkOrder")
+   * @ORM\JoinColumn(name="WorkOrderId", referencedColumnName="id")
    */
   private $workOrder;
 
@@ -130,74 +89,7 @@ class JobService
         return $this->id;
     }
 
-    /**
-     * Set workOrderId
-     *
-     * @param integer $workOrderId
-     * @return JobService
-     */
-    public function setWorkOrderId($workOrderId)
-    {
-        $this->workOrderId = $workOrderId;
 
-        return $this;
-    }
-
-    /**
-     * Get workOrderId
-     *
-     * @return integer
-     */
-    public function getWorkOrderId()
-    {
-        return $this->workOrderId;
-    }
-
-    /**
-     * Set categoryId
-     *
-     * @param integer $categoryId
-     * @return JobService
-     */
-    public function setCategoryId($categoryId)
-    {
-        $this->categoryId = $categoryId;
-
-        return $this;
-    }
-
-    /**
-     * Get categoryId
-     *
-     * @return integer
-     */
-    public function getCategoryId()
-    {
-        return $this->categoryId;
-    }
-
-    /**
-     * Set vehicleId
-     *
-     * @param integer $vehicleId
-     * @return JobService
-     */
-    public function setVehicleId($vehicleId)
-    {
-        $this->vehicleId = $vehicleId;
-
-        return $this;
-    }
-
-    /**
-     * Get vehicleId
-     *
-     * @return integer
-     */
-    public function getVehicleId()
-    {
-        return $this->vehicleId;
-    }
 
     /**
      * Set name
@@ -315,25 +207,44 @@ class JobService
     }
 
     /**
-     * Set statusId
-     *
-     * @param integer $statusId
-     * @return JobService
+     * @return mixed
      */
-    public function setStatusId($statusId)
-    {
-        $this->statusId = $statusId;
-
-        return $this;
+    public function getEmployees() {
+        return $this->employees;
     }
 
     /**
-     * Get statusId
-     *
-     * @return integer
+     * @param mixed $employees
      */
-    public function getStatusId()
-    {
-        return $this->statusId;
+    public function setEmployees($employees) {
+        $this->employees = $employees;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getVehicle() {
+        return $this->vehicle;
+    }
+
+    /**
+     * @param mixed $vehicle
+     */
+    public function setVehicle($vehicle) {
+        $this->vehicle = $vehicle;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWorkOrder() {
+        return $this->workOrder;
+    }
+
+    /**
+     * @param mixed $workOrder
+     */
+    public function setWorkOrder($workOrder) {
+        $this->workOrder = $workOrder;
     }
 }

@@ -54,9 +54,8 @@ class WorkOrder {
    */
   private $customerLocation;
 
-   /**
-   * @ORM\ManyToOne(targetEntity="JobService")
-   * @ORM\JoinColumn(name="JobServiceId", referencedColumnName="id")
+  /**
+   * @ORM\OneToMany(targetEntity="JobService", mappedBy="WorkOrder")
    */
   private $jobServices;
 
@@ -69,17 +68,6 @@ class WorkOrder {
     return $this->id;
   }
 
-  /**
-   * Set customerId
-   *
-   * @param integer $customerId
-   * @return WorkOrder
-   */
-  public function setCustomerId($customerId) {
-    $this->customerId = $customerId;
-
-    return $this;
-  }
 
   /**
    * @return mixed
@@ -123,35 +111,6 @@ class WorkOrder {
     $this->jobServices = $jobServices;
   }
 
-  /**
-   * Get customerId
-   *
-   * @return integer
-   */
-  public function getCustomerId() {
-    return $this->customerId;
-  }
-
-  /**
-   * Set statusId
-   *
-   * @param integer $statusId
-   * @return WorkOrder
-   */
-  public function setStatusId($statusId) {
-    $this->statusId = $statusId;
-
-    return $this;
-  }
-
-  /**
-   * Get statusId
-   *
-   * @return integer
-   */
-  public function getStatusId() {
-    return $this->statusId;
-  }
 
   /**
    * Set description
@@ -216,24 +175,4 @@ class WorkOrder {
     return $this->serviceTime;
   }
 
-  /**
-   * Set serviceLocationId
-   *
-   * @param integer $serviceLocationId
-   * @return WorkOrder
-   */
-  public function setServiceLocationId($serviceLocationId) {
-    $this->serviceLocationId = $serviceLocationId;
-
-    return $this;
-  }
-
-  /**
-   * Get serviceLocationId
-   *
-   * @return integer
-   */
-  public function getServiceLocationId() {
-    return $this->serviceLocationId;
-  }
 }
