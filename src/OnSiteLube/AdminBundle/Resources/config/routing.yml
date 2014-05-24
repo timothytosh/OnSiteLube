@@ -1,0 +1,155 @@
+# DEFAULT HOMEPAGE -------------------------------------------------------------------------------------
+on_site_lube_admin_homepage:
+    pattern:  /dashboard
+    defaults: { _controller: OnSiteLubeAdminBundle:Default:index }
+
+
+# LOGIN AUDIT LOG -------------------------------------------------------------------------------------
+on_site_lube_loginAuditLog:
+    pattern:  /loginAudit
+    defaults: { _controller: OnSiteLubeAdminBundle:LoginAudit:index }
+
+
+# COMPANY -------------------------------------------------------------------------------------
+on_site_lube_companyInfo:
+    pattern:  /companyInfo
+    defaults: { _controller: OnSiteLubeAdminBundle:Company:index }
+
+
+# MESSAGES -------------------------------------------------------------------------------------
+on_site_lube_messages:
+    pattern:  /messages
+    defaults: { _controller: OnSiteLubeAdminBundle:Message:index }
+
+# CUSTOMER -------------------------------------------------------------------------------------
+on_site_lube_customers:
+    pattern:  /customerAdmin
+    defaults: { _controller: OnSiteLubeAdminBundle:Customer:admin }
+
+on_site_lube_customer_details:
+    pattern:  /customerDetail
+    defaults: { _controller: OnSiteLubeAdminBundle:Customer:detail }
+
+on_site_lube_customerSearch:
+    pattern:  /customerSearch
+    defaults: { _controller: OnSiteLubeAdminBundle:Customer:autoComplete }
+
+on_site_lube_retrieveCustomer:
+    pattern:  /retrieveCustomer
+    defaults: { _controller: OnSiteLubeAdminBundle:Customer:retrieve }
+
+# EMPLOYEE -------------------------------------------------------------------------------------
+on_site_lube_employeeSearch:
+    pattern:  /employeeSearch
+    defaults: { _controller: OnSiteLubeAdminBundle:Employee:autoComplete }
+
+on_site_lube_employees:
+    pattern:  /employees
+    defaults: { _controller: OnSiteLubeAdminBundle:Employee:index }
+
+on_site_lube_addEmployee:
+    pattern:  /addEmployee
+    defaults: { _controller: OnSiteLubeAdminBundle:Employee:add }
+
+on_site_lube_updateEmployee:
+    pattern:  /updateEmployee
+    defaults: { _controller: OnSiteLubeAdminBundle:Employee:update }
+
+on_site_lube_retrieveEmployee:
+    pattern:  /retrieveEmployee
+    defaults: { _controller: OnSiteLubeAdminBundle:Employee:retrieve }
+
+
+# EMPLOYEE SCHEDULE -------------------------------------------------------------------------------------
+on_site_lube_schedule_for_employee:
+    pattern:  /empSchedule
+    defaults: { _controller: OnSiteLubeAdminBundle:EmployeeScheduler:retrieve }
+
+
+# COMPANY LOCATION -------------------------------------------------------------------------------------
+on_site_lube_locations:
+    pattern:  /companyLocations
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyLocation:index }
+
+on_site_lube_companyLocationSearch:
+    pattern:  /companyLocationSearch
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyLocation:autoComplete }
+
+on_site_lube_addCompanyLocation:
+    pattern:  /addCompanyLocation
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyLocation:add }
+
+on_site_lube_updateCompanyLocation:
+    pattern:  /updateCompanyLocation
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyLocation:update }
+
+on_site_lube_retrieveCompanyLocation:
+    pattern:  /retrieveCompanyLocation
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyLocation:retrieve }
+
+on_site_lube_findAllCompanyLocation:
+    pattern:  /findAllCompanyLocation
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyLocation:findAll }
+
+
+# COMPANY VEHICLES -------------------------------------------------------------------------------------
+on_site_lube_retrieveCompanyVehicle:
+    pattern:  /retrieveCompanyVehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyVehicle:retrieve }
+
+on_site_lube_companyVehicleSearch:
+    pattern:  /companyVehicleSearch
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyVehicle:autoComplete }
+
+on_site_lube_addCompanyVehicle:
+    pattern:  /addCompanyVehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyVehicle:add }
+
+on_site_lube_updateCompanyVehicle:
+    pattern:  /updateCompanyVehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyVehicle:update }
+
+on_site_lube_vehicles:
+    pattern:  /companyVehicles
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyVehicle:index }
+
+on_site_lube_employee_vehicle:
+    pattern:  /empvehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CompanyVehicle:findByLocation }
+
+# JOB SERVICE -------------------------------------------------------------------------------------
+on_site_lube_job_service_for_employee:
+    pattern:  /employeeJobs
+    defaults: { _controller: OnSiteLubeAdminBundle:JobService:retrieve }
+
+on_site_lube_job_service_billable_time:
+    pattern:  /updateBillableTimeForJobService
+    defaults: { _controller: OnSiteLubeAdminBundle:JobService:updateBillableTime }
+
+on_site_lube_job_service_billable_time_mobile:
+    pattern:  /employeeJobsMobile
+    defaults: { _controller: OnSiteLubeAdminBundle:JobService:retrieveJobServicesByWorkOrderAndUserAccountId }
+
+
+# WORK ORDER -------------------------------------------------------------------------------------
+on_site_lube_work_order_listing:
+    pattern:  /workOrderListing
+    defaults: { _controller: OnSiteLubeAdminBundle:WorkOrder:index }
+
+on_site_lube_work_order_for_employee:
+    pattern:  /workOrders
+    defaults: { _controller: OnSiteLubeAdminBundle:WorkOrder:retrieve }
+
+
+# USER ACCOUNT -------------------------------------------------------------------------------------
+on_site_lube_login_ua_find:
+    pattern:  /login
+    defaults: { _controller: OnSiteLubeAdminBundle:UserAccount:login }
+
+on_site_lube_logout:
+    pattern:  /logout
+    defaults: { _controller: OnSiteLubeAdminBundle:UserAccount:logout }
+
+on_site_lube_update_user:
+    pattern:  /updateUser
+    defaults: { _controller: OnSiteLubeAdminBundle:UserAccount:update }

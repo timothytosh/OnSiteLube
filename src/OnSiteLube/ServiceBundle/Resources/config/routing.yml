@@ -1,0 +1,15 @@
+on_site_lube_service_homepage:
+    pattern:  /services/orders
+    defaults: { _controller: OnSiteLubeServiceBundle:Service:index }
+    
+on_site_lube_service_create:
+    pattern:  /services/orders/create
+    defaults: { _controller: OnSiteLubeServiceBundle:Service:create }
+
+on_site_lube_service_destroy:
+    pattern:  /services/orders/destroy
+    defaults: { _controller: OnSiteLubeServiceBundle:Service:destroy }
+
+on_site_lube_service_update:
+    pattern:  /services/orders/update
+    defaults: { _controller: OnSiteLubeServiceBundle:Service:update }

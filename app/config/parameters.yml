@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_driver: pdo_mysql
+    database_host: 54.186.205.61
+    database_port: 3306
+    database_name: OnSiteLube
+    database_user: timtosh
+    database_password: '!ttjlB20147601'
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    locale: en
+    secret: ttjlb20147601

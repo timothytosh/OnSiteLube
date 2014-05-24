@@ -1,0 +1,83 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div id="admin-form" class="col-lg-12 main">
+    <h1 class="page-header">Customer Administration</h1>
+    <ul id="menu">
+        <li>Administration Module</li>
+        <li><a href="/customerLocations"> Locations</a></li>
+        <li><a href="/customerVehicles"> Vehicles</a></li>
+        <li><a href="/customers"> Customers</a></li>
+    </ul>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="well col-md-4">
+                <hr />
+                <h2><span class="label label-primary"><i class="fa fa-location-arrow fa-fw"></i>  Locations&nbsp;&nbsp;</span></h2>
+                <hr />
+                <p>
+                    Add/Update core customer locations for On Site Lube. This is the customer locations
+                    where our employees perform work orders on customer vehicles. The locations
+                    can also have addresses defined.
+                </p>
+                <p><a class="btn btn-default" href="/customerLocations" role="button">Go Now! &raquo;</a></p>
+            </div>
+
+            <div class="well col-md-4">
+                <hr />
+                <h2><span class="label label-default"><i class="fa fa-compass fa=fw"></i>  Vehicles&nbsp;&nbsp;&nbsp;&nbsp;</span></h2>
+                <hr />
+                <p>
+                    Add/Update customer vehicles. This is the customer vehicles that employees
+                    will service based on work order line items. The location of the selected vehicle will be defined
+                    in this area as well.
+                </p>
+                <p><a class="btn btn-default" href="/customerVehicles" role="button">Go Now! &raquo;</a></p>
+            </div>
+
+            <div class=" well col-md-4">
+                <hr />
+                <h2><span class="label label-success"><i class="fa fa-user fa-fw"></i>  Customers</span></h2>
+                <hr />
+                <p>
+                    Add/Update On Site Lube customer details here. These are the customers that can have work orders
+                    assigned, with service details and invoices. Customers need to be setup before work orders can be created.
+                </p>
+                <p><a class="btn btn-default" href="/customerDetail" role="button">Go Now! &raquo;</a></p>
+
+            </div>
+        </div>
+
+        <hr/>
+        <br/><br/> <br/><br/> <br/><br/> <br/><br/> <br/><br/>
+    </div> <!-- /container -->
+    <br/> <br/>
+
+    {% endblock %}
+
+
+    {# use parent js and any page specific #}
+    {% block javascripts %}
+        {{ parent() }}
+
+        <script language="javascript">
+
+            $(document).ready(function ($e) {
+
+            });
+
+        </script>
+
+    {% endblock %}

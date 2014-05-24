@@ -1,0 +1,6 @@
+on_site_lube_login_homepage:
+    pattern:  /
+    defaults: { _controller: OnSiteLubeLoginBundle:Default:index }
+
+
+

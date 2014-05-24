@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link href="styles/font-awesome.min.css" rel="stylesheet"/>
+  <link href="styles/bootstrap.min.css" rel="stylesheet"/>
+  <link href="styles/kendo.common-bootstrap.min.css" rel="stylesheet"/>
+  <link href="styles/kendo.bootstrap.min.css" rel="stylesheet"/>
+  <link href="styles/kendo.common.min.css" rel="stylesheet"/>
+
+  <script src="js/jquery.min.js"></script>
+  <script src="js/kendo.all.min.js"></script>
+</head>
+<body>
+
+<div id="example" class="k-content">
+  <div id="grid"></div>
+  <script>
+    $(document).ready(function () {
+      var servicesBaseURL = "http://localhost/services",
+          dataSource = new kendo.data.DataSource({
+            transport: {
+              read: {
+                url: servicesBaseURL + "/orders",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+              },
+              update: {
+                url: servicesBaseURL + "/orders/update",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST"
+              },
+              destroy: {
+                url: servicesBaseURL + "/orders/destroy",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST"
+              },
+              create: {
+                url: servicesBaseURL + "/orders/create",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                type: "POST"
+              },
+              parameterMap: function (options, operation) {
+                if (operation !== "read" && options.models) {
+                  return kendo.stringify(options.models);
+                }
+              }
+            },
+            batch: true,
+            pageSize: 20,
+            schema: {
+              model: {
+                id: "id",
+                fields: {
+                  id: { editable: false, nullable: true },
+                  shipName: { validation: { required: true } },
+                  freight: { type: "number", validation: { required: true, min: 1} },
+                  shipCity: { validation: { required: true } },
+                  orderDate: { validation: { required: true } }
+                }
+              }
+            }
+          });
+
+      $("#grid").kendoGrid({
+        dataSource: dataSource,
+        pageable: true,
+        height: 430,
+        toolbar: ["create"],
+        columns: [
+          { field: "shipName", title: "Product Shipper", width: "200px" },
+          { field: "freight", title: "Freight Price", format: "{0:c}", width: "150px" },
+          { field: "shipCity", width: "150px" },
+          { field: "orderDate", width: "150px" },
+          { command: ["edit", "destroy"], title: "&nbsp;", width: "172px" }
+        ],
+        editable: "inline"
+      });
+    });
+  </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <meta name="description" content="On Site Lube Web Application">
+    <meta name="author" content="Timothy W. Tosh">
+    <title>{% block title %}On Site Lube{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.png') }}" />
+
+    {% block stylesheets %}
+      <link href="{{ asset('styles/font-awesome.min.css') }}" rel="stylesheet" />
+      <link href="{{ asset('styles/bootstrap.min.css') }}" rel="stylesheet" />
+      <link href="{{ asset('styles/kendo.common-bootstrap.min.css') }}" rel="stylesheet" />
+      <link href="{{ asset('styles/kendo.bootstrap.min.css') }}" rel="stylesheet" />
+      <link href="{{ asset('styles/kendo.dataviz.bootstrap.min.css') }}" rel="stylesheet" />
+      <link href="{{ asset('styles/bootstrap-switch.min.css') }}" rel="stylesheet">
+    {% endblock %}
+
+    {% block topleveljs %}
+      <script src="{{ asset('js/jquery.min.js') }}"></script>
+      <script src="{{ asset('js/kendo.all.min.js') }}"></script>
+      <script src="{{ asset('js/bootstrap-switch.min.js') }}"></script>
+    {% endblock %}
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+
+    {% block content %}
+      <h1>Current content to override</h1>
+    {% endblock %}
+
+    {% block javascripts %}
+      <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+      <script src="{{ asset('js/docs.min.js') }}"></script>
+    {% endblock %}
+
+    {% block footer %}
+
+    {% endblock %}
+
+</body>
+</html>
+

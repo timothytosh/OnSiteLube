@@ -1,0 +1,255 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+
+    <style id="scoped">
+        .hint {
+            line-height: 22px;
+            color: #aaa;
+            font-style: italic;
+            font-size: .9em;
+            color: #7496d4;
+        }
+    </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div id="admin-form" class="col-lg-12 main">
+<h1 class="page-header">Customer Administration</h1>
+<ul id="menu">
+    <li>Administration Module</li>
+    <li><a href="/customerLocations"> Locations</a></li>
+    <li><a href="/customerVehicles"> Vehicles</a></li>
+    <li><a href="/customerInfo"> Customer</a></li>
+</ul>
+
+<div class="row clearfix">
+    <div class="col-sm-6">
+        <section id="profile" class="well">
+            <h2 class="ra-well-title">Add/Edit Customers</h2>
+            <input style="width: 350px;" id="txtSearchCustomers" value=""/>
+            <button id="btnClear" type="submit" class="btn btn-primary">Clear</button>
+            <div class="hint">Start typing the name of an customer, or add a new one.</div>
+            <hr/>
+
+
+            <div class="input-group input-group-sm">
+                <input id="txtCustomername"  type="text" class="form-control" style="width: 300px;" placeholder="Customer Name">&nbsp;&nbsp;
+                <span id="spanCustomername" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+            </div>
+
+
+            <div class="input-group input-group-sm">
+                <input id="txtPhone"  type="text" maxlength="12" class="form-control" style="width: 300px;" placeholder="Phone Number">&nbsp;&nbsp;
+            </div>
+
+            <div class="input-group input-group-sm">
+                <input id="txtAddress"  type="text" class="form-control" style="width: 300px;" placeholder="Address">&nbsp;&nbsp;
+            </div>
+
+
+            <div class="input-group input-group-sm">
+                <input id="txtCity"  type="text" class="form-control" style="width: 300px;" placeholder="City">&nbsp;&nbsp;
+            </div>
+
+            <div class="input-group input-group-sm">
+                <input id="txtState"  type="text" class="form-control" maxlength="2" style="width: 300px;" placeholder="State e.g. OK, TX">&nbsp;&nbsp;
+            </div>
+
+            <div class="input-group input-group-sm">
+                <input id="txtPostalCode"  type="text" maxlength="5" class="form-control" style="width: 300px;" placeholder="Postal Code">&nbsp;&nbsp;
+            </div>
+
+            <div class="input-group input-group-sm">
+                <input id="txtCountry"  type="text" class="form-control" style="width: 300px;" value="United States" disabled>&nbsp;&nbsp;
+            </div>
+
+            <hr/>
+            <div class="row text-right">
+
+                <div id="alertMessage">
+                    <button id="btnDismissAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                    <span id="alertMessageSpan"></span>
+                </div>
+
+                <button id="btnAdd" type="submit" class="btn btn-primary">Add</button>
+                <button id="btnUpdate" type="submit" class="btn btn-primary">Update</button>
+                &nbsp;&nbsp;
+            </div>
+            <input type="hidden" class="k-form-text-row" class="k-form-text-row" id="txtCustomerId" value=""/>
+        </section>
+    </div>
+</div>
+
+
+<br/> <br/>
+
+{% endblock %}
+
+{# use parent js and any page specific #}
+{% block javascripts %}
+{{ parent() }}
+
+<script language="javascript">
+
+$(document).ready(function ($e) {
+
+    // autocomplete with actions
+    $("#txtSearchCustomers").kendoAutoComplete({
+        select: function (e) {
+            var selItem = this.dataItem(e.item.index());
+            $.ajax({
+                type: 'GET',
+                contentType: 'json',
+                url: '/retrieveCustomer?customerId=' + selItem["customerId"],
+                success: function(data, textStatus) {
+                    updateUIWithCustomer(data[0]);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+        },
+        minLength: 3,
+        dataTextField: "name", // JSON property name to use
+        dataSource: new kendo.data.DataSource({
+            type: "json", // specifies data protocol
+            pageSize: 10, // limits result set
+            transport: {
+                read: {
+                    url: "/customerSearch",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }
+            }
+        })
+    });
+
+     $('input').keyup(function() {
+        if ($('#txtCustomername').val().length > 0) {
+            $('#spanCustomername').removeClass('label-danger').addClass('label-success');
+        } else {
+            $('#spanCustomername').removeClass('label-success').addClass('label-danger');
+        }
+    });
+
+
+    $('#btnClear').on('click', function(e, data) {
+        $("input:text").val("");
+        $('#btnAdd').removeAttr("disabled");
+        $('#btnUpdate').attr("disabled", "true");
+        $('#txtCountry').val('United States');
+
+        resetValidation(false);
+
+        // focus on search
+        $('#txtSearchCustomers').focus();
+    });
+
+    $('#btnAdd').on('click', function(e, data) {
+
+        $('#alertMessage').removeClass('alert alert-success');
+        $('#alertMessage').removeClass('alert alert-danger');
+
+        if($('span').hasClass('label-danger')) {
+            updateValidationMessage();
+            return;
+        }
+
+        var data = "[{ \"customerName\" : \"" + $('#txtCustomername').val();
+        data += "\", \"address\" : \"" + $('#txtAddress').val();
+        data += "\", \"city\" : \"" + $('#txtCity').val() + "\", \"state\" : \"" + $('#txtState').val();
+        data += "\", \"postalCode\" : \"" + $('#txtPostalCode').val();
+        data += "\", \"phone\" : \"" + $('#txtPhone').val() + "\"}]";
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/addCustomer',
+            data: data,
+            success: function(data, textStatus) {
+                updateAlertMessage(true);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                updateAlertMessage(false);
+            }
+        });
+
+    });
+
+    function updateAlertMessage($success) {
+        if($success) {
+            $('#alertMessage').addClass('alert alert-success');
+            $('#alertMessageSpan').html('<strong>Success!</strong> Record added/updated successfully.');
+            $('#alertMessage').show();
+
+            setTimeout(function () {
+                $('#alertMessage').hide();
+                $('#btnClear').click();
+                $('#txtSearchEmployees').focus();
+                resetValidation(false);
+            }, 2000);
+        } else {
+            $('#alertMessage').addClass('alert alert-danger');
+            $('#alertMessageSpan').html('<strong>Oh snap!</strong> There was a problem with the record.');
+            $('#alertMessage').show();
+
+            setTimeout(function () {
+                $('#alertMessage').hide();
+                $('#txtFirstname').focus();
+                resetValidation(false);
+            }, 2000);
+        }
+    }
+
+    function updateValidationMessage() {
+        $('#alertMessage').addClass('alert alert-danger');
+        $('#alertMessageSpan').html('<strong>Oh snap!</strong> Check required fields then try again.');
+        $('#alertMessage').show();
+
+        setTimeout(function () {
+            $('#alertMessage').hide();
+            $('#txtCustomername').focus();
+        }, 2000);
+    }
+
+    function updateUIWithCustomer(data) {
+
+        resetValidation(true);
+
+        $("#txtCustomername").val(data["name"]);
+        $("#txtPhone").val(data["phone"]);
+        $("#txtAddress").val(data["address"]);
+        $("#txtCity").val(data["city"]);
+        $("#txtState").val(data["state"]);
+
+
+        // block from showing just 0
+        if(data["postalCode"] == 0)
+            $("#txtPostalCode").val("");
+        else
+            $("#txtPostalCode").val(data["postalCode"]);
+
+        $('#btnAdd').attr("disabled", true);
+        $('#btnUpdate').removeAttr("disabled");
+    }
+
+
+    function resetValidation(reset) {
+        if(reset) {
+            $('#spanCustomername').removeClass('label-danger').addClass('label-success');
+        } else {
+            $('#spanCustomername').removeClass('label-success').addClass('label-danger');
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,118 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+
+    <div id="admin-form" class="col-lg-12 main">
+        <h1 class="page-header">Work Order Details</h1>
+        <ul id="menu">
+            <li>Administration Module</li>
+        </ul>
+
+        <div class="row clearfix">
+            <div class="col-lg-4">
+                <section id="customer" class="well">
+                    <h2 class="ra-well-title">{{ workOrder.customer }}</h2>
+
+                    <div class="row">
+                        <div class="col-lg-5 img-responsive">
+                            Service Time: {{ workOrder.serviceTime }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 img-responsive">
+                            {{ workOrder.address }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 img-responsive">
+                            {{ workOrder.city }}, {{ workOrder.state }} {{ workOrder.postalCode }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 img-responsive">
+                            {{ workOrder.phone }}
+                        </div>
+                    </div>
+
+                </section>
+            </div>
+            <div class="col-lg-8">
+                <div id="grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+{% endblock %}
+
+
+{# use parent js and any page specific #}
+{% block javascripts %}
+    {{ parent() }}
+
+    <script language="javascript">
+
+        $(document).ready(function ($e) {
+
+            $("#grid").kendoGrid({
+                columns: [
+                    { field: "jobServiceId", hidden: true },
+                    { field: "name", title: "Service" },
+                    { field: "hours", title: "Est. Hours" },
+                    { field: "unitNumber", title: "Vehicle No." },
+                    { field: "location", title: "Location" }
+                ],
+                dataSource: {
+                    data: {{ jobServices|json_encode()|raw }},
+                    schema: {
+                        model: {
+                            id: "jobServiceId",
+                            name: "name",
+                            hours: "hours",
+                            unitNumber: "unitNumber",
+                            location: "location",
+                            billableTimeId: "billableTimeId"
+                        }
+                    }
+                },
+                selectable: "row",
+                editable: true,
+                edit: function(e) {
+                    $(e.container).find("input[name='name']").prop('disabled', true);
+                    $(e.container).find("input[name='hours']").prop('disabled', true);
+                    $(e.container).find("input[name='unitNumber']").prop('disabled', true);
+                    $(e.container).find("input[name='location']").prop('disabled', true);
+                },
+                save: function (e) {
+                    var data = "[{ \"billableTimeId\" : \"" + e.model.billableTimeId;
+                    data += "\", \"userAccountId\" : \"" + {{ app.session.get('UserAccount')[0].id }};
+                    data += "\", \"jobServiceId\" : \"" + e.model.jobServiceId + "\"}]";
+                    $.ajax({
+                        type: 'POST',
+                        url: '/updateBillableTimeForJobService',
+                        data: data,
+                        success: function (data, textStatus) {
+                            alert("Success");
+                        },
+                        error: function (xhr, textStatus, errorThrown) {
+                            alert("Error");
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+
+{% endblock %}
+

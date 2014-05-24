@@ -1,0 +1,324 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+
+  <style id="scoped">
+    .hint {
+      line-height: 22px;
+      color: #aaa;
+      font-style: italic;
+      font-size: .9em;
+      color: #7496d4;
+    }
+  </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+  <!-- account profile section -->
+<div id="admin-form" class="col-lg-12 main">
+  <h1 class="page-header">Company Administration</h1>
+  <ul id="menu">
+    <li>Administration Module</li>
+    <li><a href="/companyLocations"> Locations</a></li>
+    <li><a href="/companyVehicles"> Vehicles</a></li>
+    <li><a href="/employees"> Employees</a></li>
+  </ul>
+
+  <div class="row clearfix">
+    <div class="col-sm-6">
+      <section id="profile" class="well">
+        <h2 class="ra-well-title">Add/Edit Locations</h2>
+        <input style="width: 350px;" id="txtSearchLocations" value=""/>
+        <button id="btnClear" type="submit" class="btn btn-primary">Clear</button>
+        <div class="hint">Start typing the name of an location, or add a new one.</div>
+        <hr/>
+
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtName"  type="text" class="form-control" style="width: 300px;" placeholder="Location Name">&nbsp;&nbsp;
+          <span id="spanName" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtAddress"  type="text" class="form-control" style="width: 300px;" placeholder="Address">&nbsp;&nbsp;
+          <span id="spanAddress" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtCity"  type="text" class="form-control" style="width: 300px;" placeholder="City">&nbsp;&nbsp;
+          <span id="spanCity" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtState"  type="text" class="form-control" style="width: 300px;" placeholder="State">&nbsp;&nbsp;
+          <span id="spanState" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtPostalCode"  type="text" class="form-control" style="width: 300px;" placeholder="Postal Code">&nbsp;&nbsp;
+          <span id="spanPostalCode" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+        <div class="input-group input-group-sm">
+          <input id="txtCountry"  type="text" class="form-control" style="width: 300px;" value="United States" disabled>&nbsp;&nbsp;
+        </div>
+
+
+        <hr/>
+        <div class="row text-right">
+
+          <div id="alertMessage">
+            <button id="btnDismissAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <span id="alertMessageSpan"></span>
+          </div>
+
+          <button id="btnAdd" type="submit" class="btn btn-primary">Add</button>
+          <button id="btnUpdate" type="submit" class="btn btn-primary">Update</button>
+          &nbsp;&nbsp;
+        </div>
+        <input type="hidden" class="k-form-text-row" class="k-form-text-row" id="txtLocationId" value=""/>
+      </section>
+    </div>
+  </div>
+
+  <br/> <br/>
+
+  {% endblock %}
+
+
+  {# use parent js and any page specific #}
+  {% block javascripts %}
+  {{ parent() }}
+
+  <script language="javascript">
+
+    $(document).ready(function ($e) {
+
+      $("span .fa-exclamation-circle").kendoTooltip({
+        content: "Required",
+        position: "top"
+      });
+
+      $('#alertMessage').hide();
+      $('#btnUpdate').attr("disabled", "true");
+
+      $('input').keyup(function() {
+        if($('#txtName').val().length > 0) {
+          $('#spanName').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanName').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtAddress').val().length > 0) {
+          $('#spanAddress').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanAddress').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtCity').val().length > 0) {
+          $('#spanCity').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanCity').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtState').val().length > 0) {
+          $('#spanState').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanState').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtPostalCode').val().length == 5) {
+          $('#spanPostalCode').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanPostalCode').removeClass('label-success').addClass('label-danger');
+        }
+
+      });
+
+      $('#btnClear').click(function () {
+        $("input:text").val("");
+        resetValidation(false);
+        $('#btnAdd').removeAttr("disabled");
+        $('#btnUpdate').attr("disabled", "true");
+        $('#txtSearchLocations').focus();
+
+        $('#txtCountry').val('United States');
+      });
+
+      $('#btnAdd').click(function () {
+        $('#alertMessage').removeClass('alert alert-success');
+        $('#alertMessage').removeClass('alert alert-danger');
+
+        if($('span').hasClass('label-danger')) {
+          updateValidationMessage();
+          return;
+        }
+
+        var data = "[{ \"name\" : \"" + $('#txtName').val() + "\", \"address\" : \"" + $('#txtAddress').val();
+        data += "\", \"city\" : \"" + $('#txtCity').val() + "\", \"state\" : \"" + $('#txtState').val();
+        data += "\", \"postalCode\" : \"" + $('#txtPostalCode').val() + "\"}]";
+
+        $.ajax({
+          type: 'POST',
+          url: '/addCompanyLocation',
+          data: data,
+          success: function(data, textStatus) {
+            updateAlertMessage(true);
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            updateAlertMessage(false);
+          }
+        });
+      });
+
+
+      $('#btnUpdate').click(function () {
+        $('#alertMessage').removeClass('alert alert-success');
+        $('#alertMessage').removeClass('alert alert-danger');
+
+        if($('span').hasClass('label-danger')) {
+          updateValidationMessage();
+          return;
+        }
+
+        var data = "[{ \"name\" : \"" + $('#txtName').val() + "\", \"address\" : \"" + $('#txtAddress').val();
+        data += "\", \"city\" : \"" + $('#txtCity').val() + "\", \"state\" : \"" + $('#txtState').val();
+        data += "\", \"postalCode\" : \"" + $('#txtPostalCode').val() + "\", \"locationId\" : \"" + $('#txtLocationId').val() + "\"}]";
+
+        $.ajax({
+          type: 'POST',
+          url: '/updateCompanyLocation',
+          data: data,
+          success: function(data, textStatus) {
+            updateAlertMessage(true);
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            updateAlertMessage(false);
+          }
+        });
+      });
+
+      function updateUIWithLocationInfo(data) {
+        resetValidation(true);
+        $("#txtName").val(data["name"]);
+        $("#txtAddress").val(data["address"]);
+        $("#txtCity").val(data["city"]);
+        $("#txtState").val(data["state"]);
+
+          // block from showing just 0
+          if(data["postalCode"] == 0)
+              $("#txtPostalCode").val("");
+          else
+              $("#txtPostalCode").val(data["postalCode"]);
+
+
+        $("#txtLocationId").val(data["locationId"]);
+
+        $('#btnAdd').attr("disabled", true);
+        $('#btnUpdate').removeAttr("disabled");
+      }
+
+      // autocomplete with actions
+      $("#txtSearchLocations").kendoAutoComplete({
+        select: function (e) {
+          var selItem = this.dataItem(e.item.index());
+          $.ajax({
+            type: 'GET',
+            contentType: 'json',
+            url: '/retrieveCompanyLocation?locationId=' + selItem["locationId"],
+            success: function (data, textStatus) {
+              updateUIWithLocationInfo(data[0]);
+            },
+            error: function (xhr, textStatus, errorThrown) {
+              alert(textStatus);
+            }
+          });
+        },
+        minLength: 2,
+        dataTextField: "name", // JSON property name to use
+        dataSource: new kendo.data.DataSource({
+          type: "json", // specifies data protocol
+          pageSize: 10, // limits result set
+          transport: {
+            read: {
+              url: "/companyLocationSearch",
+              contentType: "application/json; charset=utf-8",
+              dataType: "json"
+            }
+          }
+        })
+      });
+
+      function updateAlertMessage($success) {
+
+        if ($success) {
+          $('#alertMessage').addClass('alert alert-success');
+          $('#alertMessageSpan').html('<strong>Success!</strong> Record added/updated successfully.');
+          $('#alertMessage').show();
+
+          setTimeout(function () {
+            $('#alertMessage').hide();
+            $('#btnClear').click();
+            $('#txtSearchEmployees').focus();
+            resetValidation(false);
+          }, 2000);
+        } else {
+          $('#alertMessage').addClass('alert alert-danger');
+          $('#alertMessageSpan').html('<strong>Oh snap!</strong> There was a problem with the record.');
+          $('#alertMessage').show();
+
+          setTimeout(function () {
+            $('#alertMessage').hide();
+            $('#txtFirstname').focus();
+            resetValidation(false);
+          }, 2000);
+        }
+      }
+
+      function updateValidationMessage() {
+        $('#alertMessage').addClass('alert alert-danger');
+        $('#alertMessageSpan').html('<strong>Oh snap!</strong> Check required fields then try again.');
+        $('#alertMessage').show();
+
+        setTimeout(function () {
+          $('#alertMessage').hide();
+          $('#txtFirstname').focus();
+        }, 2000);
+      }
+
+      function resetValidation(reset) {
+        if (reset) {
+          $('#spanName').removeClass('label-danger').addClass('label-success');
+          $('#spanAddress').removeClass('label-danger').addClass('label-success');
+          $('#spanCity').removeClass('label-danger').addClass('label-success');
+          $('#spanState').removeClass('label-danger').addClass('label-success');
+          $('#spanPostalCode').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanName').removeClass('label-success').addClass('label-danger');
+          $('#spanAddress').removeClass('label-success').addClass('label-danger');
+          $('#spanCity').removeClass('label-success').addClass('label-danger');
+          $('#spanState').removeClass('label-success').addClass('label-danger');
+          $('#spanPostalCode').removeClass('label-success').addClass('label-danger');
+        }
+      }
+
+
+      // focus on search
+      $('#txtSearchLocations').focus();
+
+    });
+
+  </script>
+
+{% endblock %}

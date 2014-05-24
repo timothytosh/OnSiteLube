@@ -1,0 +1,8 @@
+<component name="libraryTable">
+  <library name="Kendo UI" type="javaScript">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/web/js/kendo.all.min.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+  <meta name="description" content="On Site Lube Web Application">
+  <meta name="author" content="Timothy W. Tosh">
+  <title>{% block title %}On Site Lube{% endblock %}</title>
+  <link rel="icon" type="image/x-icon" href="{{ asset('images/favicon.png') }}" />
+
+  {% block stylesheets %}
+    <link href="{{ asset('styles/font-awesome.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('styles/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('styles/kendo.common-bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('styles/kendo.bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('styles/kendo.dataviz.bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('styles/bootstrap-switch.min.css') }}" rel="stylesheet">
+  {% endblock %}
+
+  {% block topleveljs %}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/kendo.all.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap-switch.min.js') }}"></script>
+  {% endblock %}
+
+  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+
+<!-- top navigation for admin module -->
+<div class="navbar navbar-inverse navbar-fixed-top divshadow" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/dashboard"><i class="fa fa-home fa-fw"></i></a>
+    </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+
+
+        <li class="dropdown">
+
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <i class="fa fa-gears fa-fw"></i> Modules<b class="caret"></b></a>
+
+          <ul class="dropdown-menu">
+
+
+            <li><a href="/dashboard"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a></li>
+            <li class="divider"></li>
+            <li><a href="/companyInfo"><i class="fa fa-info fa-fw"></i> Company Info</a></li>
+            <li class="disabled"><a href="#"><i class="fa fa-clock-o fa-fw"></i> Time Entry</a></li>
+            <li class="disabled"><a href="#"><i class="fa fa-puzzle-piece fa-fw"></i> Quiz Activities</a></li>
+            <li class="divider"></li>
+            <li class="disabled"><a href="#"><i class="fa fa-barcode fa-fw"></i> Inventory</a></li>
+            <li class="disabled"><a href="#"><i class="fa fa-money fa-fw"></i> Accounting</a></li>
+            <li class="disabled"><a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Forecasting</a></li>
+            <li class="disabled"><a href="#"><i class="fa fa-calendar fa-fw"></i> Scheduling</a></li>
+            <li class="divider"></li>
+            <li class="disabled"><a href="#"><i class="fa fa-credit-card fa-fw"></i> Vendors</a></li>
+            <li><a href="/customerAdmin"><i class="fa fa-laptop fa-fw"></i> Customer Info</a></li>
+            <li class="divider"></li>
+            <li class="disabled"><a href="#"><i class="fa fa-users fa-fw"></i> Human Resources</a></li>
+          </ul>
+        </li>
+
+
+        <li><a href="#"><i class="fa fa-file-o fa-fw"></i>Reporting</a></li>
+        <li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a></li>
+        <li><a href="#"><i class="fa fa-question-circle fa-fw"></i>Help</a></li>
+        <li><a href="/logout"><i class="fa fa-lock fa-fw"></i>Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% block content %}
+  <h1>Current content to override</h1>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/docs.min.js') }}"></script>
+  <script src="{{ asset('js/admin.js') }}"></script>
+{% endblock %}
+
+<section id="footer">
+  <footer class="navbar hidden-xs">
+    <p id="footer-block" class="text-center">
+      Version 0.1.3 &middot; All Rights Reserved &middot; &copy; 2014 On Site Lube &middot; Toll-Free: (866) 235-5823 &middot;
+      <a href="mailto:support@onsitelube.com">Support</a> &middot; <a href="#">Privacy</a>
+    </p>
+  </footer>
+</section>
+</div>
+
+</body>
+</html>
+

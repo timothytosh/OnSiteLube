@@ -1,0 +1,12 @@
+on_site_lube_service:
+    resource: "@OnSiteLubeServiceBundle/Resources/config/routing.yml"
+    prefix:   /
+
+on_site_lube_admin:
+    resource: "@OnSiteLubeAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+on_site_lube_login:
+    resource: "@OnSiteLubeLoginBundle/Resources/config/routing.yml"
+    prefix:   /
+

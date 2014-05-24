@@ -1,0 +1,378 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+
+  <style id="scoped">
+    .hint {
+      line-height: 22px;
+      color: #aaa;
+      font-style: italic;
+      font-size: .9em;
+      color: #7496d4;
+    }
+  </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+  <!-- account profile section -->
+<div id="admin-form" class="col-lg-12 main">
+  <h1 class="page-header">Company Administration</h1>
+  <ul id="menu">
+    <li>Administration Module</li>
+    <li><a href="/companyLocations"> Locations</a></li>
+    <li><a href="/companyVehicles"> Vehicles</a></li>
+    <li><a href="/employees"> Employees</a></li>
+  </ul>
+
+  <div class="row clearfix">
+    <div class="col-sm-6">
+      <section id="profile" class="well">
+        <h2 class="ra-well-title">Add/Edit Vehicles</h2>
+        <input style="width: 350px;" id="txtSearchVehicles" value=""/>
+        <button id="btnClear" type="submit" class="btn btn-primary">Clear</button>
+        <div class="hint">Start typing the unit no. of an vehicle, or add a new one.</div>
+        <hr/>
+
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtUnitNumber"  type="text" class="form-control" style="width: 300px;" placeholder="Unit Number">&nbsp;&nbsp;
+          <span id="spanUnitNumber" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtVIN"  type="text" class="form-control" style="width: 300px;" placeholder="Vehicle Identification No.">&nbsp;&nbsp;
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtTag"  type="text" class="form-control" style="width: 300px;" placeholder="Tag">&nbsp;&nbsp;
+        </div>
+
+        <div class="input-group input-group-sm">
+          <input id="txtMake"  type="text" class="form-control" style="width: 300px;" placeholder="Make">&nbsp;&nbsp;
+        </div>
+
+
+        <div class="input-group input-group-sm">
+          <input id="txtModel"  type="text" class="form-control" style="width: 300px;" placeholder="Model">&nbsp;&nbsp;
+        </div>
+
+        <div class="input-group input-group-sm">
+          <input id="txtYear"  type="text" class="form-control" style="width: 300px;" placeholder="Year">&nbsp;&nbsp;
+        </div>
+
+        <br />
+
+        <div class="btn-group btn-group-sm">
+          <div class="btn-group btn-group-sm">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+              Vehicle Location
+              <span class="caret"></span>
+            </button>
+            <ul id="ulLocations" class="dropdown-menu">
+            </ul>
+          </div>
+          <button id="selCompanyLocation" type="button" class="btn btn-default" style="width: 180px;"> - </button>&nbsp;&nbsp;
+          <span id="spanCompanyLocation" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+        </div>
+
+        <hr/>
+        <div class="row text-right">
+
+          <div id="alertMessage">
+            <button id="btnDismissAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <span id="alertMessageSpan"></span>
+          </div>
+
+          <button id="btnAdd" type="submit" class="btn btn-primary">Add</button>
+          <button id="btnUpdate" type="submit" class="btn btn-primary">Update</button>
+          &nbsp;&nbsp;
+        </div>
+        <input type="hidden" class="k-form-text-row" class="k-form-text-row" id="txtVehicleId" value=""/>
+      </section>
+    </div>
+  </div>
+
+  <br/> <br/>
+
+  {% endblock %}
+
+
+  {# use parent js and any page specific #}
+  {% block javascripts %}
+  {{ parent() }}
+
+  <script language="javascript">
+
+  var selLocationId = 1;
+
+    $(document).ready(function ($e) {
+
+      $("span .fa-exclamation-circle").kendoTooltip({
+        content: "Required",
+        position: "top"
+      });
+
+      $.getJSON("/findAllCompanyLocation", function(result) {
+        $.each(result, function(i)
+        {
+          $('<li/>')
+              .attr('id', result[i].id)
+              .text(result[i].name)
+              .appendTo($('#ulLocations'));
+        });
+
+        $('#ulLocations li').click(function($e) {
+          $('#selCompanyLocation').text($(this).text());
+          selLocationId = $(this).attr('id')
+
+          if(selLocationId > 0) {
+            $('#spanCompanyLocation').removeClass('label-danger').addClass('label-success');
+          } else {
+            $('#spanCompanyLocation').removeClass('label-success').addClass('label-danger');
+          }
+        });
+      });
+
+      $('#alertMessage').hide();
+      $('#btnUpdate').attr("disabled", "true");
+
+      $('input').keyup(function() {
+        if($('#txtUnitNumber').val().length > 0) {
+          $('#spanUnitNumber').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanUnitNumber').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtVIN').val().length > 0) {
+          $('#spanVIN').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanVIN').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtTag').val().length > 0) {
+          $('#spanTag').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanTag').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtYear').val().length > 0) {
+          $('#spanYear').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanYear').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtMake').val().length > 0) {
+          $('#spanMake').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanMake').removeClass('label-success').addClass('label-danger');
+        }
+
+        if($('#txtModel').val().length > 0) {
+          $('#spanModel').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanModel').removeClass('label-success').addClass('label-danger');
+        }
+
+        $('#selVehicleLocation').change(function() {
+          if($('#selVehicleLocation').val().length > 0) {
+            $('#spanVehicleLocation').removeClass('label-danger').addClass('label-success');
+          } else {
+            $('#spanVehicleLocation').removeClass('label-success').addClass('label-danger');
+          }
+        });
+
+      });
+
+      $('#btnClear').click(function () {
+        $("input:text").val("");
+        resetValidation(false);
+
+        $("#selVehicleLocation option").filter(function() {
+          return $(this).text() == "";
+        }).prop('selected', true);
+
+        $('#btnAdd').removeAttr("disabled");
+        $('#btnUpdate').attr("disabled", "true");
+        $('#txtSearchVehicles').focus();
+      });
+
+      $('#btnAdd').click(function () {
+        $('#alertMessage').removeClass('alert alert-success');
+        $('#alertMessage').removeClass('alert alert-danger');
+
+        if($('span').hasClass('label-danger')) {
+          updateValidationMessage();
+          return;
+        }
+
+        var data = "[{ \"unitNumber\" : \"" + $('#txtUnitNumber').val() + "\", \"vin\" : \"" + $('#txtVIN').val();
+        data += "\", \"tag\" : \"" + $('#txtTag').val() + "\", \"year\" : \"" + $('#txtYear').val();
+        data += "\", \"model\" : \"" + $('#txtModel').val() + "\", \"vehicleLocation\" : \"" + selLocationId;
+        data += "\", \"make\" : \"" + $('#txtMake').val() + "\"}]";
+
+        $.ajax({
+          type: 'POST',
+          url: '/addCompanyVehicle',
+          data: data,
+          success: function(data, textStatus) {
+            updateAlertMessage(true);
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            updateAlertMessage(false);
+          }
+        });
+      });
+
+
+      $('#btnUpdate').click(function () {
+        $('#alertMessage').removeClass('alert alert-success');
+        $('#alertMessage').removeClass('alert alert-danger');
+
+        if($('span').hasClass('label-danger')) {
+          updateValidationMessage();
+          return;
+        }
+
+        var data = "[{ \"unitNumber\" : \"" + $('#txtUnitNumber').val() + "\", \"vin\" : \"" + $('#txtVIN').val();
+        data += "\", \"tag\" : \"" + $('#txtTag').val() + "\", \"year\" : \"" + $('#txtYear').val();
+        data += "\", \"model\" : \"" + $('#txtModel').val() + "\", \"vehicleLocation\" : \"" + selLocationId;
+        data += "\", \"make\" : \"" + $('#txtMake').val() + "\", \"vehicleId\" : \"" + $('#txtVehicleId').val() + "\"}]";
+
+        $.ajax({
+          type: 'POST',
+          url: '/updateCompanyVehicle',
+          data: data,
+          success: function(data, textStatus) {
+            updateAlertMessage(true);
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            updateAlertMessage(false);
+          }
+        });
+      });
+
+      function updateUIWithVehicleInfo(data) {
+
+        resetValidation(true);
+
+        $("#txtUnitNumber").val(data["unitNumber"]);
+        $("#txtVIN").val(data["vin"]);
+        $("#txtTag").val(data["tag"]);
+        $("#txtYear").val(data["year"]);
+        $("#txtMake").val(data["make"]);
+        $("#txtModel").val(data["model"]);
+        $("#txtVehicleId").val(data["vehicleId"]);
+
+        selLocationId = data["locationId"];
+        $("#selCompanyLocation").val(data["locationName"]);
+
+        $('#btnAdd').attr("disabled", true);
+        $('#btnUpdate').removeAttr("disabled");
+      }
+
+      // autocomplete with actions
+      $("#txtSearchVehicles").kendoAutoComplete({
+        select: function (e) {
+          var selItem = this.dataItem(e.item.index());
+          $.ajax({
+            type: 'GET',
+            contentType: 'json',
+            url: '/retrieveCompanyVehicle?vehicleId=' + selItem["vehicleId"],
+            success: function(data, textStatus) {
+              updateUIWithVehicleInfo(data[0]);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+              alert(textStatus);
+            }
+          });
+        },
+        minLength: 2,
+        filter: "contains",
+        dataTextField: "unitNumber", // JSON property name to use
+        dataSource: new kendo.data.DataSource({
+          type: "json", // specifies data protocol
+          pageSize: 10, // limits result set
+          transport: {
+            read: {
+              url: "/companyVehicleSearch",
+              contentType: "application/json; charset=utf-8",
+              dataType: "json"
+            }
+          }
+        })
+      });
+
+      function updateAlertMessage($success) {
+
+        if($success) {
+          $('#alertMessage').addClass('alert alert-success');
+          $('#alertMessageSpan').html('<strong>Success!</strong> Record added/updated successfully.');
+          $('#alertMessage').show();
+
+          setTimeout(function () {
+            $('#alertMessage').hide();
+            $('#btnClear').click();
+            $('#txtSearchEmployees').focus();
+            resetValidation(false);
+          }, 2000);
+        } else {
+          $('#alertMessage').addClass('alert alert-danger');
+          $('#alertMessageSpan').html('<strong>Oh snap!</strong> There was a problem with the record.');
+          $('#alertMessage').show();
+
+          setTimeout(function () {
+            $('#alertMessage').hide();
+            $('#txtFirstname').focus();
+            resetValidation(false);
+          }, 2000);
+        }
+      }
+
+      function updateValidationMessage() {
+        $('#alertMessage').addClass('alert alert-danger');
+        $('#alertMessageSpan').html('<strong>Oh snap!</strong> Check required fields then try again.');
+        $('#alertMessage').show();
+
+        setTimeout(function () {
+          $('#alertMessage').hide();
+          $('#txtFirstname').focus();
+        }, 2000);
+      }
+
+      function resetValidation(reset) {
+        if(reset) {
+          $('#spanUnitNumber').removeClass('label-danger').addClass('label-success');
+          $('#spanVIN').removeClass('label-danger').addClass('label-success');
+          $('#spanTag').removeClass('label-danger').addClass('label-success');
+          $('#spanYear').removeClass('label-danger').addClass('label-success');
+          $('#spanMake').removeClass('label-danger').addClass('label-success');
+          $('#spanModel').removeClass('label-danger').addClass('label-success');
+          $('#spanVehicleLocation').removeClass('label-danger').addClass('label-success');
+        } else {
+          $('#spanUnitNumber').removeClass('label-success').addClass('label-danger');
+          $('#spanVIN').removeClass('label-success').addClass('label-danger');
+          $('#spanTag').removeClass('label-success').addClass('label-danger');
+          $('#spanYear').removeClass('label-success').addClass('label-danger');
+          $('#spanMake').removeClass('label-success').addClass('label-danger');
+          $('#spanModel').removeClass('label-success').addClass('label-danger');
+          $('#spanVehicleLocation').removeClass('label-success').addClass('label-danger');
+        }
+      }
+
+      // focus on search
+      $('#txtSearchVehicles').focus();
+
+    });
+
+  </script>
+
+{% endblock %}

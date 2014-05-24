@@ -1,0 +1,560 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+  {{ parent() }}
+  <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+
+  <style id="scoped">
+    .hint {
+      line-height: 22px;
+      color: #aaa;
+      font-style: italic;
+      font-size: .9em;
+      color: #7496d4;
+    }
+
+    .k-scheduler-toolbar {
+         border-width: 0 0 1px;
+         display: none;
+     }
+  </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div id="admin-form" class="col-lg-12 main">
+<h1 class="page-header">Company Administration</h1>
+<ul id="menu">
+  <li>Administration Module</li>
+  <li><a href="/companyLocations"> Locations</a></li>
+  <li><a href="/companyVehicles"> Vehicles</a></li>
+  <li><a href="/employees"> Employees</a></li>
+</ul>
+
+<div class="row clearfix">
+  <div class="col-sm-6">
+    <section id="profile" class="well">
+      <h2 class="ra-well-title">Add/Edit Employees</h2>
+      <input style="width: 350px;" id="txtSearchEmployees" value=""/>
+      <button id="btnClear" type="submit" class="btn btn-primary">Clear</button>
+      <div class="hint">Start typing the name of an employee, or add a new one.</div>
+      <hr/>
+
+      <div class="input-group input-group-sm">
+        <input id="txtEmpIdentifier"  type="text" class="form-control" style="width: 300px;" placeholder="Employee Identifier">&nbsp;&nbsp;
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtFirstname"  type="text" class="form-control" style="width: 300px;" placeholder="First Name">&nbsp;&nbsp;
+        <span id="spanFirstname" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtLastname"  type="text" class="form-control" style="width: 300px;" placeholder="Last Name">&nbsp;&nbsp;
+        <span id="spanLastname" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtEmail"  type="text" class="form-control" style="width: 300px;" placeholder="Email Address">&nbsp;&nbsp;
+        <span id="spanEmail" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtPhone"  type="text" maxlength="12" class="form-control" style="width: 300px;" placeholder="Phone Number">&nbsp;&nbsp;
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtAddress"  type="text" class="form-control" style="width: 300px;" placeholder="Address">&nbsp;&nbsp;
+      </div>
+
+
+      <div class="input-group input-group-sm">
+        <input id="txtCity"  type="text" class="form-control" style="width: 300px;" placeholder="City">&nbsp;&nbsp;
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtState"  type="text" class="form-control" maxlength="2" style="width: 300px;" placeholder="State e.g. OK, TX">&nbsp;&nbsp;
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtPostalCode"  type="text" maxlength="5" class="form-control" style="width: 300px;" placeholder="Postal Code">&nbsp;&nbsp;
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtCountry"  type="text" class="form-control" style="width: 300px;" value="United States" disabled>&nbsp;&nbsp;
+      </div>
+
+      <br />
+
+      <div class="input-group input-group-sm">
+        <div class="btn-group btn-group-sm">
+          <button id="btnMale" type="button" class="btn btn-primary">Male</button>
+          <button id="btnFemale" type="button" class="btn btn-default">Female</button>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="input-group input-group-sm">
+        <input id="txtUserName"  type="text" class="form-control" style="width: 300px;" placeholder="Username">&nbsp;&nbsp;
+        <span id="spanUsername" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+      </div>
+
+      <div class="input-group input-group-sm">
+        <input id="txtPassword"  type="password" class="form-control" style="width: 300px;" placeholder="Password">&nbsp;&nbsp;
+        <span id="spanPassword" class="label label-danger"><i class="fa fa-exclamation-circle"></i></span>
+      </div>
+
+      <br />
+
+      <div class="input-group input-group-sm">
+        <div class="btn-group btn-group-sm">
+          <button id="btnActive" type="button" class="btn btn-success">Active</button>
+          <button id="btnInactive" type="button" class="btn btn-default">Inactive</button>
+        </div>
+      </div>
+
+      <br />
+
+      <div class="btn-group btn-group-sm">
+        <div class="btn-group btn-group-sm">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Work Location
+            <span class="caret"></span>
+          </button>
+          <ul id="ulLocations" class="dropdown-menu">
+          </ul>
+        </div>
+        <button id="selCompanyLocation" type="button" class="btn btn-default" style="width: 200px;"> - </button>
+      </div>
+
+      <br />
+
+      <div class="btn-group btn-group-sm">
+        <div class="btn-group btn-group-sm">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            Select Vehicle
+            <span class="caret"></span>
+          </button>
+          <ul id="ulVehicles" class="dropdown-menu">
+
+          </ul>
+        </div>
+        <button id="selVehicle" type="button" class="btn btn-default" style="width: 200px;"> - </button>
+      </div>
+
+      <hr/>
+      <div class="row text-right">
+
+        <div id="alertMessage">
+          <button id="btnDismissAlert" type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          <span id="alertMessageSpan"></span>
+        </div>
+
+        <button id="btnAdd" type="submit" class="btn btn-primary">Add</button>
+        <button id="btnUpdate" type="submit" class="btn btn-primary">Update</button>
+        &nbsp;&nbsp;
+      </div>
+      <input type="hidden" class="k-form-text-row" class="k-form-text-row" id="txtUserAccountId" value=""/>
+      <input type="hidden" class="k-form-text-row" class="k-form-text-row" id="txtEmployeeId" value=""/>
+    </section>
+  </div>
+</div>
+
+<!--
+<div id="empSchedule"></div>
+-->
+
+<br/> <br/>
+
+{% endblock %}
+
+{# use parent js and any page specific #}
+{% block javascripts %}
+{{ parent() }}
+
+<script language="javascript">
+
+  var selLocationId = 1;
+  var selVehicleId = 20;
+  var selGenderId = 1;
+  var selUserIsActive = true;
+
+  $(document).ready(function ($e) {
+
+    $("[name='switchGender']").bootstrapSwitch();
+    $("[name='switchIsActive']").bootstrapSwitch();
+
+    $("span .fa-exclamation-circle").kendoTooltip({
+      content: "Required",
+      position: "top"
+    });
+
+    $.getJSON("/findAllCompanyLocation", function(result) {
+        $.each(result, function(i)
+        {
+          $('<li/>')
+              .attr('id', result[i].id)
+              .text(result[i].name)
+              .appendTo($('#ulLocations'));
+        });
+
+        $('#ulLocations li').click(function($e) {
+          $('#selCompanyLocation').text($(this).text());
+          selLocationId = $(this).attr('id')
+
+          if(selLocationId > 0) {
+            $('#spanCompanyLocation').removeClass('label-danger').addClass('label-success');
+          } else {
+            $('#spanCompanyLocation').removeClass('label-success').addClass('label-danger');
+          }
+        });
+    });
+
+    $('#ulLocations').on('click', function($e, data) {
+
+      $("#ulVehicles").empty();
+
+      var data = "locationId=" + selLocationId;
+      $.getJSON("/empvehicle", data, function(result) {
+
+        $.each(result, function(i)
+        {
+          $('<li/>')
+              .attr('id', result[i].id)
+              .text(result[i].unitNumber)
+              .appendTo($('#ulVehicles'));
+        });
+
+        $('#ulVehicles li').click(function($e) {
+          $('#selVehicle').text($(this).text());
+          selVehicleId = $(this).attr('id');
+        });
+    });
+
+    });
+
+    $('input').keyup(function() {
+      if($('#txtFirstname').val().length > 0) {
+        $('#spanFirstname').removeClass('label-danger').addClass('label-success');
+      } else {
+        $('#spanFirstname').removeClass('label-success').addClass('label-danger');
+      }
+
+      if($('#txtLastname').val().length > 0) {
+        $('#spanLastname').removeClass('label-danger').addClass('label-success');
+      } else {
+        $('#spanLastname').removeClass('label-success').addClass('label-danger');
+      }
+
+      if($('#txtEmail').val().length > 0 && isEmail($('#txtEmail').val())) {
+        $('#spanEmail').removeClass('label-danger').addClass('label-success');
+      } else {
+        $('#spanEmail').removeClass('label-success').addClass('label-danger');
+      }
+
+      if($('#txtUserName').val().length > 0) {
+        $('#spanUsername').removeClass('label-danger').addClass('label-success');
+      } else {
+        $('#spanUsername').removeClass('label-success').addClass('label-danger');
+      }
+
+      if($('#txtPassword').val().length > 0) {
+        $('#spanPassword').removeClass('label-danger').addClass('label-success');
+      } else {
+        $('#spanPassword').removeClass('label-success').addClass('label-danger');
+      }
+
+    });
+
+    $('#alertMessage').hide();
+
+    // start off in add mode
+    $('#btnUpdate').attr("disabled", "true");
+
+    // clear out and set action buttons
+    $('#btnClear').on('click', function(e, data) {
+      $("input:text").val("");
+      $("input:password").val("");
+      $('#btnAdd').removeAttr("disabled");
+      $('#btnUpdate').attr("disabled", "true");
+
+      $("#selCompanyLocation").text('-');
+      $("#selVehicle").text('-');
+      $('#txtCountry').val('United States');
+      resetValidation(false);
+
+      // after update is done, reset defaults
+      selLocationId = 1;
+      selVehicleId = 20;
+
+      // focus on search
+      $('#txtSearchEmployees').focus();
+    });
+
+    // add new employee
+    $('#btnAdd').on('click', function(e, data) {
+
+      $('#alertMessage').removeClass('alert alert-success');
+      $('#alertMessage').removeClass('alert alert-danger');
+
+      if($('span').hasClass('label-danger')) {
+        updateValidationMessage();
+        return;
+      }
+
+      var data = "[{ \"firstName\" : \"" + $('#txtFirstname').val() + "\", \"lastName\" : \"" + $('#txtLastname').val();
+      data += "\", \"email\" : \"" + $('#txtEmail').val() + "\", \"employeeIdentifier\" : \"" + $('#txtEmpIdentifier').val();
+      data += "\", \"genderId\" : \"" + selGenderId + "\", \"address\" : \"" + $('#txtAddress').val();
+      data += "\", \"city\" : \"" + $('#txtCity').val() + "\", \"state\" : \"" + $('#txtState').val();
+      data += "\", \"postalCode\" : \"" + $('#txtPostalCode').val() + "\", \"locationId\" : \"" + selLocationId;
+      data += "\", \"isActive\" : \"" + selUserIsActive;
+      data += "\", \"vehicleId\" : \"" + selVehicleId + "\", \"username\" : \"" + $('#txtUserName').val();
+      data += "\", \"phone\" : \"" + $('#txtPhone').val() + "\", \"password\" : \"" + $('#txtPassword').val() + "\"}]";
+
+      $.ajax({
+        type: 'POST',
+        url: '/addEmployee',
+        data: data,
+        success: function(data, textStatus) {
+          updateAlertMessage(true);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          updateAlertMessage(false);
+        }
+      });
+
+      // after add is done, reset defaults
+      selLocationId = 1;
+      selVehicleId = 20;
+
+    });
+
+
+    $('#btnMale').on('click', function(e, data) {
+      $('#btnFemale').removeClass('btn-info').addClass('btn-default');
+      $('#btnMale').removeClass('btn-default').addClass('btn-primary');
+      selGenderId = 1;
+    });
+
+    $('#btnFemale').on('click', function(e, data) {
+      $('#btnFemale').removeClass('btn-default').addClass('btn-info');
+      $('#btnMale').removeClass('btn-primary').addClass('btn-default');
+      selGenderId = 2;
+    });
+
+    $('#btnActive').on('click', function(e, data) {
+      $('#btnInactive').removeClass('btn-danger').addClass('btn-default');
+      $('#btnActive').removeClass('btn-default').addClass('btn-success');
+      selUserIsActive = true;
+    });
+
+    $('#btnInactive').on('click', function(e, data) {
+      $('#btnInactive').removeClass('btn-default').addClass('btn-danger');
+      $('#btnActive').removeClass('btn-success').addClass('btn-default');
+      selUserIsActive = false;
+    });
+
+    // update existing employee
+    $('#btnUpdate').on('click', function(e, data) {
+
+      $('#alertMessage').removeClass('alert alert-success');
+      $('#alertMessage').removeClass('alert alert-danger');
+
+      if($('span').hasClass('label-danger')) {
+        updateValidationMessage();
+        return;
+      }
+
+      var data = "[{ \"firstName\" : \"" + $('#txtFirstname').val() + "\", \"lastName\" : \"" + $('#txtLastname').val();
+      data += "\", \"email\" : \"" + $('#txtEmail').val() + "\", \"employeeIdentifier\" : \"" + $('#txtEmpIdentifier').val();
+      data += "\", \"genderId\" : \"" + selGenderId + "\", \"address\" : \"" + $('#txtAddress').val();
+      data += "\", \"city\" : \"" + $('#txtCity').val() + "\", \"state\" : \"" + $('#txtState').val();
+      data += "\", \"postalCode\" : \"" + $('#txtPostalCode').val() + "\", \"locationId\" : \"" + selLocationId;
+      data += "\", \"isActive\" : \"" + selUserIsActive;
+      data += "\", \"vehicleId\" : \"" + selVehicleId + "\", \"username\" : \"" + $('#txtUserName').val();
+      data += "\", \"employeeId\" : \"" + $('#txtEmployeeId').val();
+      data += "\", \"phone\" : \"" + $('#txtPhone').val() + "\", \"password\" : \"" + $('#txtPassword').val() + "\", \"userAccountId\" : \"";
+      data += $('#txtUserAccountId').val() + "\"}]";
+
+      $.ajax({
+        type: 'POST',
+        url: '/updateEmployee',
+        data: data,
+        success: function(data, textStatus) {
+          updateAlertMessage(true);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          updateAlertMessage(false);
+        }
+      });
+    });
+
+    function updateUIWithUserAccountEmployee(data) {
+
+      resetValidation(true);
+
+      $("#txtFirstname").val(data["firstName"]);
+      $("#txtLastname").val(data["lastName"]);
+      $("#txtEmail").val(data["email"]);
+      $("#txtUserName").val(data["username"]);
+      $("#txtPassword").val(data["password"]);
+      $("#txtPhone").val(data["phone"]);
+      $("#txtAddress").val(data["address"]);
+      $("#txtCity").val(data["city"]);
+      $("#txtState").val(data["state"]);
+
+
+      // block from showing just 0
+      if(data["postalCode"] == 0)
+        $("#txtPostalCode").val("");
+      else
+        $("#txtPostalCode").val(data["postalCode"]);
+
+
+      // need to set correct loc and vehicle ids and update UI
+      // with correct text entries for these
+      selLocationId = data["locationId"];
+      selVehicleId = data["id"];
+
+      $("#selCompanyLocation").text(data["locationName"]);
+      $("#selVehicle").text(data["unitNumber"]);
+
+
+      // check gender, do swap, set gender
+      genderId = data["gender"] == "Male" ? 1 : 2;
+      if(genderId == 1)
+      {
+        $('#btnFemale').removeClass('btn-info').addClass('btn-default');
+        $('#btnMale').removeClass('btn-default').addClass('btn-primary');
+      } else {
+        $('#btnFemale').removeClass('btn-default').addClass('btn-info');
+        $('#btnMale').removeClass('btn-primary').addClass('btn-default');
+      }
+      selGenderId = genderId;
+
+
+
+      $('#txtEmpIdentifier').val(data['empIdentifier'])
+      $("#txtUserAccountId").val(data["userAccountId"]);
+      $("#txtEmployeeId").val(data["employeeId"]);
+
+      $('#btnAdd').attr("disabled", true);
+      $('#btnUpdate').removeAttr("disabled");
+
+
+      // check active, do swap set gender
+      var isUserActive = data["isActive"];
+      if(isUserActive)
+      {
+        $('#btnInactive').removeClass('btn-danger').addClass('btn-default');
+        $('#btnActive').removeClass('btn-default').addClass('btn-success');
+      } else {
+        $('#btnInactive').removeClass('btn-default').addClass('btn-danger');
+        $('#btnActive').removeClass('btn-success').addClass('btn-default');
+      }
+      selUserIsActive = isUserActive;
+    }
+
+    // autocomplete with actions
+    $("#txtSearchEmployees").kendoAutoComplete({
+      select: function (e) {
+        var selItem = this.dataItem(e.item.index());
+        $.ajax({
+          type: 'GET',
+          contentType: 'json',
+          url: '/retrieveEmployee?userAccountId=' + selItem["userAccountId"],
+          success: function(data, textStatus) {
+            updateUIWithUserAccountEmployee(data[0]);
+          },
+          error: function(xhr, textStatus, errorThrown) {
+            alert(textStatus);
+          }
+        });
+      },
+      minLength: 3,
+      dataTextField: "FullName", // JSON property name to use
+      dataSource: new kendo.data.DataSource({
+        type: "json", // specifies data protocol
+        pageSize: 10, // limits result set
+        transport: {
+          read: {
+            url: "/employeeSearch",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json"
+          }
+        }
+      })
+    });
+
+    // focus on search
+    $('#txtSearchEmployees').focus();
+
+  });
+
+  function updateAlertMessage($success) {
+
+    if($success) {
+      $('#alertMessage').addClass('alert alert-success');
+      $('#alertMessageSpan').html('<strong>Success!</strong> Record added/updated successfully.');
+      $('#alertMessage').show();
+
+      setTimeout(function () {
+        $('#alertMessage').hide();
+        $('#btnClear').click();
+        $('#txtSearchEmployees').focus();
+        resetValidation(false);
+      }, 2000);
+    } else {
+      $('#alertMessage').addClass('alert alert-danger');
+      $('#alertMessageSpan').html('<strong>Oh snap!</strong> There was a problem with the record.');
+      $('#alertMessage').show();
+
+      setTimeout(function () {
+        $('#alertMessage').hide();
+        $('#txtFirstname').focus();
+        resetValidation(false);
+      }, 2000);
+    }
+  }
+
+  function updateValidationMessage() {
+      $('#alertMessage').addClass('alert alert-danger');
+      $('#alertMessageSpan').html('<strong>Oh snap!</strong> Check required fields then try again.');
+      $('#alertMessage').show();
+
+      setTimeout(function () {
+        $('#alertMessage').hide();
+        $('#txtFirstname').focus();
+      }, 2000);
+  }
+
+  function resetValidation(reset) {
+    if(reset) {
+        $('#spanFirstname').removeClass('label-danger').addClass('label-success');
+        $('#spanLastname').removeClass('label-danger').addClass('label-success');
+        $('#spanEmail').removeClass('label-danger').addClass('label-success');
+        $('#spanUsername').removeClass('label-danger').addClass('label-success');
+        $('#spanPassword').removeClass('label-danger').addClass('label-success');
+        $('#spanCompanyLocation').removeClass('label-danger').addClass('label-success');
+    } else {
+        $('#spanFirstname').removeClass('label-success').addClass('label-danger');
+        $('#spanLastname').removeClass('label-success').addClass('label-danger');
+        $('#spanEmail').removeClass('label-success').addClass('label-danger');
+        $('#spanUsername').removeClass('label-success').addClass('label-danger');
+        $('#spanPassword').removeClass('label-success').addClass('label-danger');
+        $('#spanCompanyLocation').removeClass('label-success').addClass('label-danger');
+    }
+  }
+
+  function isEmail(email) {
+    var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email);
+  }
+
+</script>
+
+{% endblock %}

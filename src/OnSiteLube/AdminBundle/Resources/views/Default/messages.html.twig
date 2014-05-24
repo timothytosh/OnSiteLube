@@ -1,0 +1,119 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+
+{% block content %}
+
+<!-- account profile section -->
+<div id="admin-form"  class="col-lg-12 main">
+
+
+    <h1 class="page-header">Account Dashboard</h1>
+    <ul id="menu">
+        <li>Administration Module</li>
+    </ul>
+
+    <div class="row clearfix">
+        <div class="col-lg-3">
+            <section id="profile" class="well">
+                <h2 class="ra-well-title">Message Center<i class="fa fa-envelope-o fa-fw pull-right"></i></h2>
+                <div class="row">
+                    This is the message center, welcome!
+                </div>
+
+            </section>
+        </div>
+        <div class="well col-lg-8">
+            <h2 class="ra-well-title">{Employee} : Messages</h2>
+            <div id="grid"></div>
+        </div>
+    </div>
+
+</div>
+
+    <!-- popup window, not part of layout -->
+    <div id="msgWindow">
+        <p>A new employee handbook has been approved and is up for review at the document repository.</p>
+        <p>Please take the time to <a href="#">review</a> the new handbook and sign the last page as an indicator you have read and agree to the terms.</p>
+    </div>
+
+
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+    <br /><br /><br /><br /><br /><br /><br />
+
+{% endblock %}
+
+
+
+
+{# use parent js and any page specific #}
+{% block javascripts %}
+    {{ parent() }}
+
+<script language="javascript">
+
+    var messageWindow = $('#msgWindow');
+    messageWindow.hide();
+
+    $(document).ready(function ($e) {
+       function onChange(arg) {
+           var entityGrid = $("#grid").data("kendoGrid");
+           var selectedItem = entityGrid.dataItem(entityGrid.select());
+           alert(selectedItem.MessageId);
+        }
+
+        var messages = [{
+            MessageId : 1,
+            MessagePart : "Updated employee manual",
+            DateReceived : "03/13/2014",
+            From : "Janice Mckee"
+        }, {
+            MessageId : 2,
+            MessagePart : "Service date cancelled",
+            DateReceived : "03/13/2014",
+            From : "Mike Mckee"
+        }, {
+            MessageId : 3,
+            MessagePart : "Saturday Picnic",
+            DateReceived : "03/13/2014",
+            From : "Janice Mckee"
+        }];
+
+        $("#grid").kendoGrid({
+            dataSource: {
+                data: messages,
+                schema: {
+                    model: {
+                        fields: {
+
+                            MessagePart: { type: "string" },
+                            DateReceived: { type: "string" },
+                            From: { type: "string" }
+                        }
+                    }
+                },
+                pageSize: 25
+            },
+            change: onChange,
+            selectable: "single row",
+            scrollable: true,
+            sortable: false,
+            filterable: false,
+            columns: [
+                { field: "MessagePart", title: "Employe Messages",  width: "200px" },
+                { field: "DateReceived", title: "Received" },
+                { field: "From", title: "From" }
+            ]
+        });
+    });
+
+
+
+
+</script>
+{% endblock %}

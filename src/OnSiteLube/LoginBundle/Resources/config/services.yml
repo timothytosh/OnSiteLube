@@ -1,0 +1,7 @@
+parameters:
+#    on_site_lube_login.example.class: OnSiteLube\LoginBundle\Example
+
+services:
+#    on_site_lube_login.example:
+#        class: %on_site_lube_login.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]

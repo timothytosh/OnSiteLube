@@ -1,0 +1,438 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- account profile section -->
+<div id="admin-form"  class="col-lg-12 main">
+
+
+<h1 class="page-header">Account Dashboard</h1>
+<ul id="menu">
+    <li>Administration Module</li>
+    <li id="liChangePassword" class="hidden-xs"><a href="#">Change Password</a></li>
+
+    {% for acl in app.session.get('UserAcls') %}
+        {% if acl.resourceId == constant('OnSiteLube\\AdminBundle\\Entity\\Resource::SCHEDULE') %}
+            <li class="hidden-xs"><a href="#schedule">Schedule</a></li>
+        {% endif %}
+    {% endfor %}
+
+    <li class="hidden-xs"><a href="#faq">FAQ</a></li>
+    <li class="hidden-xs"><a href="/messages">Messages &nbsp; <span class="badge">3</span></a></li>
+
+</ul>
+
+<div class="row clearfix">
+    <div class="col-lg-3">
+        <section id="profile" class="well">
+            <h2 class="ra-well-title">User Profile</h2>
+            <button id="btnEdit" class="btn btn-toolbar btn-xs pull-right hidden-xs" data-toggle="modal"
+                    data-target="#myModal">
+                <i class="fa fa-pencil fa-fw"></i> Edit
+            </button>
+            <div class="row">
+                <div class="col-lg-5 img-responsive">
+                    {% for user in app.session.get('UserAccount') if user.genderId == constant('OnSiteLube\\AdminBundle\\Entity\\Gender::FEMALE') %}
+                        <img class="divshadow img-thumbnail hidden-xs" style="width: 98px; height: 98px;"
+                             src="{{ asset('images/femaleuser.png') }}"
+                             class="ra-avatar img-responsive"/>
+                    {% else %}
+                        <img class="divshadow img-thumbnail hidden-xs" style="width: 98px; height: 98px;"
+                             src="{{ asset('images/maleuser.jpg') }}"
+                             class="ra-avatar img-responsive"/>
+                    {% endfor %}
+                </div>
+
+                {% for user in app.session.get('UserAccount') %}
+                    <div class="col-lg-7 col-sm-2">
+                        <span class="ra-first-name">{{ user.firstName }}</span>
+                        <span class="ra-last-name">{{ user.lastName }}</span>
+
+                        <div class="ra-position">{{ user.email }}</div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+    </div>
+
+
+    <div class="col-lg-6" id="chart"></div>
+
+
+    <div class="col-lg-3">
+        <div class="panel panel-default">
+
+            <table class="table table-condensed">
+                <tr>
+                    <td><img id="weatherImage" src="{{ asset('images/weather/01d.png') }}"/>
+                    </td>
+                    <td><p style="font-size: 6em;"><span id="spTemp"></span>°</p></td>
+                </tr>
+            </table>
+
+
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <td><span id="spLocation"></span></td>
+                    <td><span id="spLocalTime"></span></td>
+                </tr>
+                <tr>
+                    <td>Feels like:</td>
+                    <td><span id="spFeels"></span></td>
+                </tr>
+                <tr>
+                    <td>Outlook:</td>
+                    <td><span id="spOutlook"></span></td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+
+{% for user in app.session.get('UserAccount') %}
+
+    <input type="hidden" id="txtUserId" value="{{ user.id }}"/>
+    <div class="modal fade bs-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Account Profile Setup</h4>
+                </div>
+                <div class="modal-body">
+
+                    <section class="well">
+                        <h2 class="ra-well-title">{{ user.firstName }} {{ user.lastName }} : {{ user.title }}</h2>
+
+                        <div class="form-horizontal form-widgets col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="firstname">First Name</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtFirstName" value="{{ user.firstName }}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="lastname">Last Name</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtLastName" value="{{ user.lastName }}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="username">Username</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtUsername" value="{{ user.username }}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="username">Password</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtPassword" type="password" class="form-control"
+                                           value="{{ user.password }}"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="form-horizontal form-widgets col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="email">Email</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtEmail" value="{{ user.email }}"/>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="gender">Gender</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <select id="selGender">
+                                        {% if user.genderId == constant('OnSiteLube\\AdminBundle\\Entity\\Gender::MALE') %}
+                                            <option selected>Male</option>
+                                            <option>Female</option>
+                                        {% else %}
+                                            <option>Male</option>
+                                            <option selected>Female</option>
+                                        {% endif %}
+                                    </select>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="phone">Phone</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtPhone" maxlength="12" value="{{ user.phone }}"/>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label col-sm-4" for="fax">Fax</label>
+
+                                <div class="col-sm-8 col-md-6">
+                                    <input id="txtFax" maxlength="12" value="{{ user.fax }}"/>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="clearfix"></div>
+
+                        <div class="buttons-wrap">
+                            <button id="btnCancel" class="k-button k-state-default" data-dismiss="modal">Cancel</button>
+                            <button id="btnUpdateUser" class="k-button k-state-default">Update</button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<br />
+
+<div id="scheduler"></div>
+
+<br />
+
+<section id="faq" class="well hidden-xs">
+    <h2 class="ra-well-title"><abbr title="Frequently Asked Questions">FAQ</abbr></h2>
+    <ul id="panelbar" class="ra-well-overlay" style="border-style: dotted;">
+        <li>
+            How do I navigate my Account Dashboard
+            <div>
+                <p>
+                    The dashboard has a submenu of items that are pertinent to your daily activities. The data on the
+                    page can be customized
+                    on a per user or group basis. This is currently just raw test data to show the abilities of the
+                    dashboard.
+                </p>
+            </div>
+        </li>
+        <li>
+            Who should use the dashboard?
+            <div>
+                <p>
+                    Anybody in the company that needs alerts, schedules and current information regarding their day.
+                </p>
+            </div>
+        </li>
+        <li>
+            Why are there not many features yet?
+            <div>
+                <p>
+                    More features will come as development continues!
+                </p>
+            </div>
+        </li>
+    </ul>
+</section>
+
+{% endblock %}
+
+
+{# use parent js and any page specific #}
+{% block javascripts %}
+{{ parent() }}
+
+<script language="javascript">
+
+    $(document).ready(function ($e) {
+
+        $.ajax({ url: "http://api.wunderground.com/api/7326e5326014e08a/geolookup/conditions/q/IA/Tulsa.json", dataType: "jsonp", success: function (parsed_json) {
+            var location = parsed_json['location']['city'] + ', US';
+            var temp_f = parsed_json['current_observation']['temp_f'];
+
+            $('#spLocalTime').text(getFormattedDate(parsed_json['current_observation']['local_time_rfc822']) + " @ " + getFormattedTime(parsed_json['current_observation']['local_time_rfc822']));
+            $('#spFeels').text(parsed_json['current_observation']['feelslike_string']);
+            $('#spOutlook').text(parsed_json['current_observation']['weather']);
+            $('#spLocation').text(location);
+            $('#spTemp').text(Math.round(temp_f));
+            $('#weatherImage').attr("src", parsed_json['current_observation']['icon_url']);
+        }});
+
+        $('#liMessages').on('click', function(e, data) {
+           showMessages();
+        });
+
+        $("#liChangePassword").on('click', function(e, data) {
+            $('#btnEdit').click();
+        });
+
+        $("#btnUpdateUser").on('click', function(e, data) {
+
+            var data = "[{ \"firstName\" : \"" + $('#txtFirstName').val() + "\", \"lastName\" : \"" + $('#txtLastName').val();
+            data += "\", \"email\" : \"" + $('#txtEmail').val() + "\", \"username\" : \"" + $('#txtUsername').val();
+            data += "\", \"fax\" : \"" + $('#txtFax').val();
+            data += "\", \"phone\" : \"" + $('#txtPhone').val() + "\", \"password\" : \"" + $('#txtPassword').val() + "\", \"id\" : \"";
+            data += $('#txtUserId').val() + "\"}]";
+
+            $.ajax({
+                type: 'POST',
+                url: '/updateUser',
+                data: data,
+                success: function (data, textStatus) {
+                    $('#btnCancel').click();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    $('#btnCancel').click();
+                }
+            });
+        });
+    });
+
+
+    function getFormattedDate($date) {
+        var d = new Date($date);
+        var curr_date = d.getDate();
+        var curr_month = d.getMonth();
+        curr_month++;
+        var curr_year = d.getFullYear();
+        return curr_year + "-" + curr_month + "-" + curr_date;
+    }
+
+    function getFormattedTime($date) {
+        var a_p = "";
+        var d = new Date($date);
+
+        var curr_hour = d.getHours();
+
+        if (curr_hour < 12)
+            a_p = "AM";
+        else
+            a_p = "PM";
+
+        if (curr_hour == 0)
+            curr_hour = 12;
+        if (curr_hour > 12)
+            curr_hour = curr_hour - 12;
+
+        var curr_min = d.getMinutes();
+
+        return curr_hour + ":" + curr_min + " " + a_p;
+    }
+
+
+    <!-- create scheduler -->
+    var scheduleDate = new Date();
+    scheduleDate.setHours(6,0,0,0);
+    $("#scheduler").kendoScheduler({
+        date: new Date(),
+        startTime: scheduleDate,
+        height: 650,
+        views: [
+            { type: "week", selected: true }
+        ],
+        dataSource: {
+            batch: true,
+            transport: {
+                read: {
+                    url: "/empSchedule?userAccountId={{ app.session.get('UserAccount')[0].id }}",
+                    dataType: "json",
+                    type: "get"
+                },
+                update: {
+                    url: "http://demos.telerik.com/kendo-ui/service/tasks/update",
+                    dataType: "jsonp"
+                },
+                create: {
+                    url: "http://demos.telerik.com/kendo-ui/service/tasks/create",
+                    dataType: "jsonp"
+                },
+                destroy: {
+                    url: "http://demos.telerik.com/kendo-ui/service/tasks/destroy",
+                    dataType: "jsonp"
+                },
+                parameterMap: function(options, operation) {
+                    if (operation !== "read" && options.models) {
+                        return {models: kendo.stringify(options.models)};
+                    }
+                }
+            },
+            schema: {
+                model: {
+                    id: "WorkOrderId",
+                    fields: {
+                        id: { type: "number" },
+                        title: { field: "Title", defaultValue: "No title", validation: { required: true } },
+                        start: { type: "date", field: "StartDateTime" },
+                        end: { type: "date", field: "EndDateTime" },
+                        description: { field: "Description" },
+                        isAllDay: { type: "boolean", field: "IsAllDay" }
+                    }
+                }
+            }
+        },
+            edit: function(e) {
+                window.location = "/workOrderListing?workOrderId=" + e.event.id + "&userAccountId=" + {{ app.session.get('UserAccount')[0].id }};
+                e.preventDefault();
+            }
+    });
+
+
+    <!-- create chart -->
+    $("#chart").kendoChart({
+        title: {
+            text: "Clock Hours vs. Billable Hours"
+        },
+        legend: {
+            position: "bottom"
+        },
+        chartArea: {
+            background: "",
+            width: 650,
+            height: 250
+        },
+        seriesDefaults: {
+            type: "line",
+            style: "smooth"
+        },
+        series: [{
+            name: "Clock",
+            data: [8, 16, 24, 32, 40, 48, 53, 61, 69, 74],
+            color: "#eb5877"
+        },{
+            name: "Billable",
+            data: [5, 12, 15, 22, 28, 36, 45, 50, 57, 63],
+            color: "#49cd59"
+        }],
+        valueAxis: {
+            labels: {
+                format: "{0}"
+            },
+            line: {
+                visible: false
+            },
+            axisCrossingValue: 60
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}",
+            template: "#= series.name #: #= value #"
+        }
+    });
+    $(document).ready(createChart);
+
+
+</script>
+
+{% endblock %}
