@@ -45,13 +45,17 @@
         <form id="frmLogin" class="navbar-form navbar-right" role="form">
           <div id="divUsername" class="form-group has-warning has-feedback">
             <input id="txtUsername" type="text" placeholder="Username" class="form-control">
-            <span id="errUsername" class="glyphicon glyphicon-warning-sign form-control-feedback hidden"></span>
+                        <span id="errUsername"
+                              class="glyphicon glyphicon-warning-sign form-control-feedback hidden"></span>
           </div>
           <div id="divPassword" class="form-group has-warning has-feedback">
             <input id="txtPassword" type="password" placeholder="Password" class="form-control">
-            <span id="errPassword" class="glyphicon glyphicon-warning-sign form-control-feedback hidden"></span>
+                        <span id="errPassword"
+                              class="glyphicon glyphicon-warning-sign form-control-feedback hidden"></span>
           </div>
-          <button id="btnSubmit" type="button" data-loading-text="Loading..." class="btn btn-success">Sign in </button>
+          <button id="btnSubmit" type="button" data-loading-text="Loading..." class="btn btn-success">Sign
+            in
+          </button>
         </form>
       </div>
     </div>
@@ -61,10 +65,12 @@
 
   <div id="divLoginError" class="bs-example">
     <br/> <br/>
+
     <div class="alert alert-danger fade in">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       <h4>Invalid Login</h4>
-      <p>Either the username or password was incorrect, please try again!</p>
+
+      <p>Either the username, password was incorrect or you are offline, please try again!</p>
     </div>
   </div>
 
@@ -72,17 +78,20 @@
   <div class="jumbotron divshadow">
     <div class="container">
       <h1>Welcome!</h1>
+
       <p>
         This is our cloud based Onsite Fleet Solution. Your account and vehicle maintenance records can be found
         and managed using the online administration system.
         This application can be used on your computer or tablet.
       </p>
+
       <p>
         If you have any questions please
         <a href="mailto:support@onsitelube.com" style="text-decoration: none;">contact us</a>.
       </p>
 
-      <p id="btnLearnMore"><a class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-modal-sm" role="button">Learn more &raquo;</a></p>
+      <p id="btnLearnMore"><a class="btn btn-primary btn-lg" data-toggle="modal" data-target=".bs-modal-sm"
+                              role="button">Learn more &raquo;</a></p>
     </div>
   </div>
 
@@ -116,7 +125,8 @@
 
         <p>
           Established in 1991, On Site Lube has specialized in fleet maintenance programs engineered to match
-          our customer’s requirements. We provide service to our clients, on site, at their location, even after
+          our customer’s requirements. We provide service to our clients, on site, at their location, even
+          after
           hours. We exist because we save our clients money and time.
         </p>
 
@@ -137,7 +147,7 @@
 
   <script language="javascript">
 
-    $( document ).ready(function($e) {
+    $(document).ready(function ($e) {
 
       $('#frmLogin').submit(function ($e) {
         $e.preventDefault();
@@ -148,35 +158,36 @@
       $('#txtUsername').focus();
 
 
-      $("#btnSubmit").click(function() {
+      $("#btnSubmit").click(function () {
 
-        $('#divLoginError').hide();
+        try {
+          $('#divLoginError').hide();
 
-        var btn = $(this);
-        $("#btnSubmit").html('Loading');
-        var data = "username=" + $('#txtUsername').val() + "&password=" + $('#txtPassword').val();
-        $.getJSON("/login", data, function(result) {
+          var btn = $(this);
+          $("#btnSubmit").html('Loading');
+          var data = "username=" + $('#txtUsername').val() + "&password=" + $('#txtPassword').val();
 
-          if(result[0].id == "0")
-            loginError();
-          else {
-              // log the successful login
-              var $auditLogData = "userAccountId=" + result[0].id;
-              $.ajax({
-                  type: 'GET',
-                  url: '/loginAudit',
-                  data: $auditLogData,
-                  success: function (data, textStatus) {
-                  }
-              });
+          $.ajax({
+            type: 'GET',
+            url: '/login"',
+            data: data,
+            success: function (data, textStatus) {
               window.location = "/dashboard";
-          }
-        });
+            },
+            error: function (xhr, textStatus, errorThrown) {
+              loginError();
+            }
+          });
+
+        } catch (err) {
+          loginError();
+        }
       });
     });
 
     function loginError() {
-      var userNameTextbox =  $('#txtUsername');
+
+      var userNameTextbox = $('#txtUsername');
       var passwordTextbox = $('#txtPassword');
       var submitButton = $("#btnSubmit");
 

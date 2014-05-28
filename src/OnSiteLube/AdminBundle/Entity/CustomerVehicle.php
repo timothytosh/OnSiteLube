@@ -21,6 +21,13 @@ class CustomerVehicle
      */
     private $id;
 
+
+  /**
+   * @ORM\ManyToOne(targetEntity="ServiceSchedule")
+   * @ORM\JoinColumn(name="ServiceScheduleId", referencedColumnName="id")
+   */
+    private $serviceScheduleId;
+
     /**
      * @var integer
      *
