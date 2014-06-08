@@ -5,9 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bb28c4c9-8188-4eae-b870-ba7be4478fdb" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CompanyLocationRepository.php" afterPath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CompanyLocationRepository.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceSchedule.php" afterPath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceSchedule.php" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/ServiceScheduleController.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceScheduleRepository.php" afterPath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceScheduleRepository.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml" afterPath="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml" />
     </list>
     <ignored path="OnSiteLube.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -130,11 +130,43 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServiceScheduleRepository.php" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="ServiceScheduleRepository.php" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceScheduleRepository.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.81986755" vertical-offset="61" max-vertical-offset="1020">
-              <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
+            <state vertical-scroll-proportion="-10.730769" vertical-offset="61" max-vertical-offset="1020">
+              <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CompanyController.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/CompanyController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-8.333333" vertical-offset="0" max-vertical-offset="595">
+              <caret line="32" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="36" selection-end-column="2" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ServiceScheduleController.php" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/ServiceScheduleController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-7.1923075" vertical-offset="0" max-vertical-offset="510">
+              <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+              <folding>
+                <element signature="e#53#110#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="routing.yml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.575" vertical-offset="1229" max-vertical-offset="2822">
+              <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -201,7 +233,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/app/config/parameters.yml" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ClockTimeRepository.php" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/JobServiceTime.php" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CustomerLocation.php" />
@@ -234,7 +265,6 @@
         <option value="$PROJECT_DIR$/app/Resources/views/admin.html.twig" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/views/Default/customer.html.twig" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/views/Default/employee.html.twig" />
-        <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/views/Default/customerdetail.html.twig" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CustomerRepository.php" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/EmployeeRepository.php" />
@@ -252,6 +282,8 @@
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CompanyLocationRepository.php" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceSchedule.php" />
         <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceScheduleRepository.php" />
+        <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/ServiceScheduleController.php" />
+        <option value="$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml" />
       </list>
     </option>
   </component>
@@ -429,7 +461,63 @@
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT USER_OBJECT="Entity">
+            <PATH_ELEMENT USER_OBJECT="Resources">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="onsitelube">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="OnSiteLube">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="AdminBundle">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Resources">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="config">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="onsitelube">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="OnSiteLube">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="AdminBundle">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Controller">
               <option name="myItemId" value="" />
               <option name="myItemType" value="" />
             </PATH_ELEMENT>
@@ -1111,20 +1199,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ClockTime.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CompanyLocation.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/CustomerLocation.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -1147,13 +1221,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/OnSiteLube/ServiceBundle/OnSiteLubeServiceBundle.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/CompanyController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
@@ -1342,13 +1409,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/WorkOrderController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="0">
@@ -1475,10 +1535,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/CompanyController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.333333" vertical-offset="0" max-vertical-offset="595">
+          <caret line="32" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="36" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Entity/ServiceScheduleRepository.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.81986755" vertical-offset="61" max-vertical-offset="1020">
-          <caret line="40" column="35" selection-start-line="40" selection-start-column="35" selection-end-line="40" selection-end-column="35" />
+        <state vertical-scroll-proportion="-10.730769" vertical-offset="61" max-vertical-offset="1020">
+          <caret line="20" column="36" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/CompanyVehicleController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.023977432" vertical-offset="595" max-vertical-offset="1547">
+          <caret line="39" column="48" selection-start-line="39" selection-start-column="48" selection-end-line="39" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Controller/ServiceScheduleController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-7.1923075" vertical-offset="0" max-vertical-offset="510">
+          <caret line="11" column="26" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="26" />
+          <folding>
+            <element signature="e#53#110#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/OnSiteLube/AdminBundle/Resources/config/routing.yml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.575" vertical-offset="1229" max-vertical-offset="2822">
+          <caret line="98" column="4" selection-start-line="98" selection-start-column="4" selection-end-line="98" selection-end-column="4" />
           <folding />
         </state>
       </provider>

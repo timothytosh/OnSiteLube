@@ -18,7 +18,7 @@ class ServiceScheduleRepository extends EntityRepository {
    *
    * @return ServiceSchedule
    */
-  public function addCompanyLocation($input) {
+  public function addServiceSchedule($input) {
     $em = $this->getEntityManager();
 
     $serviceSchedule = new ServiceSchedule();
