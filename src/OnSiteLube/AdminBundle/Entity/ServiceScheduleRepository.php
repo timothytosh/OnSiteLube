@@ -12,6 +12,38 @@ use Doctrine\ORM\EntityRepository;
  */
 class ServiceScheduleRepository extends EntityRepository {
 
+
+  /**
+   * @param $input
+   *
+   * @return ServiceSchedule
+   */
+  public function addCompanyLocation($input) {
+    $em = $this->getEntityManager();
+
+    $serviceSchedule = new ServiceSchedule();
+    $serviceSchedule->setName($input->name);
+
+    $serviceSchedule->setOilChgFilterMiles($input->oilFilterMiles);
+    $serviceSchedule->setOilChgFilterHours($input->oilFilterHours);
+    $serviceSchedule->setOilChgFilterMonths($input->oilFilterMonths);
+
+    $serviceSchedule->setFuelFilterMiles($input->fuelFilterMiles);
+    $serviceSchedule->setFuelFilterHours($input->fuelFilterHours);
+
+    $serviceSchedule->setAirFilterMiles($input->airFilterMiles);
+    $serviceSchedule->setAirFilterHours($input->airFilterHours);
+
+    $serviceSchedule->setTransFilterMiles($input->transFilterMiles);
+    $serviceSchedule->setTransFilterHours($input->transFilterHours);
+    $serviceSchedule->setTransFilterMonths($input->transFilterMonths);
+
+    $em->persist($serviceSchedule);
+    $em->flush();
+
+    return $serviceSchedule;
+  }
+
   /**
    * @param $service
    *
