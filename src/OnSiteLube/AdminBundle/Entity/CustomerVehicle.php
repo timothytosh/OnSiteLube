@@ -28,6 +28,12 @@ class CustomerVehicle
    */
     private $serviceScheduleId;
 
+  /**
+   * @ORM\ManyToOne(targetEntity="Customer")
+   * @ORM\JoinColumn(name="CustomerId", referencedColumnName="id")
+   */
+    private $customerId;
+
     /**
      * @var integer
      *
@@ -69,6 +75,16 @@ class CustomerVehicle
      * @ORM\Column(name="Make", type="string", length=45)
      */
     private $make;
+
+  /**
+   * @var string
+   *
+   * @ORM\Column(name="Model", type="string", length=45)
+   */
+    private $model;
+
+
+
 
     /**
      * @var string

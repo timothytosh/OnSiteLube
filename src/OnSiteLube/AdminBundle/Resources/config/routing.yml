@@ -96,7 +96,7 @@ on_site_lube_findAllCompanyLocation:
 on_site_lube_addServiceSchedule:
     pattern:  /addServiceSchedule
     defaults: { _controller: OnSiteLubeAdminBundle:ServiceSchedule:add }
-    
+
 
 # COMPANY VEHICLES -------------------------------------------------------------------------------------
 on_site_lube_retrieveCompanyVehicle:
