@@ -1,0 +1,403 @@
+{#Extend our base template#}
+{% extends '::admin.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('styles/admin.css') }}" rel="stylesheet"/>
+
+    <style id="scoped">
+        .hint {
+            line-height: 22px;
+            color: #aaa;
+            font-style: italic;
+            font-size: .9em;
+            color: #7496d4;
+        }
+    </style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div id="admin-form" class="col-lg-12 main">
+<h1 class="page-header">Customer Dashboard</h1>
+<button id="btnEdit" class="btn btn-toolbar btn-xs pull-right hidden-xs" data-toggle="modal"
+        data-target="#myModal">
+    <i class="fa fa-pencil fa-fw"></i> Edit
+</button>
+<ul id="menu">
+    <li>Administration Module</li>
+    <li><a href="/customerLocations"> Locations</a></li>
+    <li><a href="/customerVehicles"> Vehicles</a></li>
+    <li><a href="/customerInfo"> Customer</a></li>
+</ul>
+
+<div class="modal fade bs-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Customer Setup</h4>
+            </div>
+            <div class="modal-body">
+
+                <section class="well">
+                    <h2 class="ra-well-title"><label class="control-label col-sm-4" id="lblHeader" /></h2>
+
+                    <div class="form-horizontal form-widgets col-sm-6">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="customername">Customer Name</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="txtCustomerName"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="city">City</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="txtCity"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="state">State</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="txtState"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="postalcode">Postal Code</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="txtPostalCode"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-horizontal form-widgets col-sm-6">
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="phone">Phone</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input id="txtPhone" maxlength="12"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="taxable">Taxable</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input type="checkbox" id="chkTaxable"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="active">Active</label>
+
+                            <div class="col-sm-8 col-md-6">
+                                <input type="checkbox" id="chkActive"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="clearfix"></div>
+
+                    <div class="buttons-wrap">
+                        <button id="btnUpdateUser" class="k-button k-state-default">Update</button>
+                        <button id="btnCancel" class="k-button k-state-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="example">
+    <div id="grid"></div>
+
+    <script>
+
+        function updateUIWithCustomer(data) {
+
+
+
+            $("#txtCustomerName").val(data["name"]);
+
+            $("#txtAddress").val(data["address"]);
+            $("#txtPhone").val(data["phone"]);
+            $("#txtCity").val(data["city"]);
+            $("#txtState").val(data["state"]);
+
+            $("#chkTaxable").val(data["taxable"]);
+            $("#chkActive").val(data["active"]);
+
+            // block from showing just 0
+            if(data["postalCode"] == 0)
+                $("#txtPostalCode").val("");
+            else
+                $("#txtPostalCode").val(data["postalCode"]);
+
+        }
+
+        $(document).ready(function () {
+
+            (function( $ ) {
+                $.QueryString = (function ( a ) {
+                    if (a == "") return {};
+                    var b = {};
+                    for (var i = 0; i < a.length; ++i)
+                    {
+                        var p=a[i].split('=');
+                        if (p.length != 2) continue;
+                        b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+                    }
+                    return b;
+                })(window.location.search.substr(1).split('&'))
+            })(jQuery);
+
+            var customerId = $.QueryString["customerId"];
+
+            $.ajax({
+                type: 'GET',
+                contentType: 'json',
+                url: '/retrieveCustomer?customerId=' + customerId,
+                success: function(data, textStatus) {
+                    updateUIWithCustomer(data[0]);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+
+            var crudServiceBaseUrl = "http://demos.telerik.com/kendo-ui/service",
+                    dataSource = new kendo.data.DataSource({
+                        transport: {
+                            read:  {
+                                url: "/findAllCustomerVehicles",
+                                dataType: "json"
+                            },
+                            update: {
+                                url: crudServiceBaseUrl + "/Products/Update",
+                                dataType: "jsonp"
+                            },
+                            destroy: {
+                                url: crudServiceBaseUrl + "/Products/Destroy",
+                                dataType: "jsonp"
+                            },
+                            create: {
+                                url: crudServiceBaseUrl + "/Products/Create",
+                                dataType: "jsonp"
+                            },
+                            parameterMap: function(options, operation) {
+                                if (operation !== "read" && options.models) {
+                                    return {models: kendo.stringify(options.models)};
+                                }
+                            }
+                        },
+                        batch: true,
+                        pageSize: 20,
+                        schema: {
+                            model: {
+                                id: "id",
+                                fields: {
+                                    id: { editable: false, nullable: true },
+                                    unitNumber: { validation: { required: true } },
+                                    name: { validation: { required: true } },
+                                    address: { validation: { required: true } }
+                                }
+                            }
+                        }
+                    });
+
+            $("#grid").kendoGrid({
+                dataSource: dataSource,
+                pageable: true,
+                height: 550,
+                toolbar: ["create"],
+                columns: [
+                    { field:"id", title: "Vehicle ID" },
+                    { field: "unitNumber", title:"Unit Number"},
+                    { field: "name", title:"Location"},
+                    { field: "address", title:"Address"},
+                    { command: ["edit", "destroy"], title: "&nbsp;", width: "200px" }],
+                editable: "popup"
+            });
+        });
+    </script>
+</div>
+
+
+<br/> <br/>
+
+{% endblock %}
+
+{# use parent js and any page specific #}
+{% block javascripts %}
+{{ parent() }}
+
+<script language="javascript">
+
+$(document).ready(function ($e) {
+
+    // autocomplete with actions
+    $("#txtSearchCustomers").kendoAutoComplete({
+        select: function (e) {
+            var selItem = this.dataItem(e.item.index());
+            $.ajax({
+                type: 'GET',
+                contentType: 'json',
+                url: '/retrieveCustomer?customerId=' + selItem["customerId"],
+                success: function(data, textStatus) {
+                    updateUIWithCustomer(data[0]);
+                },
+                error: function(xhr, textStatus, errorThrown) {
+                    alert(textStatus);
+                }
+            });
+        },
+        minLength: 3,
+        dataTextField: "name", // JSON property name to use
+        dataSource: new kendo.data.DataSource({
+            type: "json", // specifies data protocol
+            pageSize: 10, // limits result set
+            transport: {
+                read: {
+                    url: "/customerSearch",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                }
+            }
+        })
+    });
+
+     $('input').keyup(function() {
+        if ($('#txtCustomername').val().length > 0) {
+            $('#spanCustomername').removeClass('label-danger').addClass('label-success');
+        } else {
+            $('#spanCustomername').removeClass('label-success').addClass('label-danger');
+        }
+    });
+
+
+    $('#btnClear').on('click', function(e, data) {
+        $("input:text").val("");
+        $('#btnAdd').removeAttr("disabled");
+        $('#btnUpdate').attr("disabled", "true");
+        $('#txtCountry').val('United States');
+
+        resetValidation(false);
+
+        // focus on search
+        $('#txtSearchCustomers').focus();
+    });
+
+    $('#btnAdd').on('click', function(e, data) {
+
+        $('#alertMessage').removeClass('alert alert-success');
+        $('#alertMessage').removeClass('alert alert-danger');
+
+        if($('span').hasClass('label-danger')) {
+            updateValidationMessage();
+            return;
+        }
+
+        var data = "[{ \"customerName\" : \"" + $('#txtCustomername').val();
+        data += "\", \"address\" : \"" + $('#txtAddress').val();
+        data += "\", \"city\" : \"" + $('#txtCity').val() + "\", \"state\" : \"" + $('#txtState').val();
+        data += "\", \"postalCode\" : \"" + $('#txtPostalCode').val();
+        data += "\", \"phone\" : \"" + $('#txtPhone').val() + "\"}]";
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/addCustomer',
+            data: data,
+            success: function(data, textStatus) {
+                updateAlertMessage(true);
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                updateAlertMessage(false);
+            }
+        });
+
+    });
+
+    function updateAlertMessage($success) {
+        if($success) {
+            $('#alertMessage').addClass('alert alert-success');
+            $('#alertMessageSpan').html('<strong>Success!</strong> Record added/updated successfully.');
+            $('#alertMessage').show();
+
+            setTimeout(function () {
+                $('#alertMessage').hide();
+                $('#btnClear').click();
+                $('#txtSearchEmployees').focus();
+                resetValidation(false);
+            }, 2000);
+        } else {
+            $('#alertMessage').addClass('alert alert-danger');
+            $('#alertMessageSpan').html('<strong>Oh snap!</strong> There was a problem with the record.');
+            $('#alertMessage').show();
+
+            setTimeout(function () {
+                $('#alertMessage').hide();
+                $('#txtFirstname').focus();
+                resetValidation(false);
+            }, 2000);
+        }
+    }
+
+    function updateValidationMessage() {
+        $('#alertMessage').addClass('alert alert-danger');
+        $('#alertMessageSpan').html('<strong>Oh snap!</strong> Check required fields then try again.');
+        $('#alertMessage').show();
+
+        setTimeout(function () {
+            $('#alertMessage').hide();
+            $('#txtCustomername').focus();
+        }, 2000);
+    }
+
+    function updateUIWithCustomer(data) {
+
+        resetValidation(true);
+
+        $("#txtCustomername").val(data["name"]);
+        $("#txtPhone").val(data["phone"]);
+        $("#txtAddress").val(data["address"]);
+        $("#txtCity").val(data["city"]);
+        $("#txtState").val(data["state"]);
+
+
+        // block from showing just 0
+        if(data["postalCode"] == 0)
+            $("#txtPostalCode").val("");
+        else
+            $("#txtPostalCode").val(data["postalCode"]);
+
+        $('#btnAdd').attr("disabled", true);
+        $('#btnUpdate').removeAttr("disabled");
+    }
+
+
+    function resetValidation(reset) {
+        if(reset) {
+            $('#spanCustomername').removeClass('label-danger').addClass('label-success');
+        } else {
+            $('#spanCustomername').removeClass('label-success').addClass('label-danger');
+        }
+    }
+});
+
+</script>
+
+{% endblock %}

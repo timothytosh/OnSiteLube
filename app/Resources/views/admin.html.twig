@@ -16,6 +16,16 @@
     <link href="{{ asset('styles/kendo.bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('styles/kendo.dataviz.bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('styles/bootstrap-switch.min.css') }}" rel="stylesheet">
+
+      <style id="scoped">
+          .hint {
+              line-height: 22px;
+              color: #aaa;
+              font-style: italic;
+              font-size: .9em;
+              color: #7496d4;
+          }
+      </style>
   {% endblock %}
 
   {% block topleveljs %}
@@ -68,7 +78,7 @@
             <li class="disabled"><a href="#"><i class="fa fa-calendar fa-fw"></i> Scheduling</a></li>
             <li class="divider"></li>
             <li class="disabled"><a href="#"><i class="fa fa-credit-card fa-fw"></i> Vendors</a></li>
-            <li><a href="/customerAdmin"><i class="fa fa-laptop fa-fw"></i> Customer Info</a></li>
+            <li><a id="mnuCustomerDashboard" href="#"><i class="fa fa-laptop fa-fw"></i> Customer Dashboard</a></li>
             <li class="divider"></li>
             <li class="disabled"><a href="#"><i class="fa fa-users fa-fw"></i> Human Resources</a></li>
           </ul>
@@ -84,6 +94,12 @@
   </div>
 </div>
 
+<div id="window" hidden="true" >
+    <input style="width: 350px;" id="txtSearchCustomers" value=""/>
+    <button id="btnSubmit" type="submit" class="btn btn-primary">GO</button>
+    <div class="hint">Start typing the name of a customer.</div>
+</div>
+
 {% block content %}
   <h1>Current content to override</h1>
 {% endblock %}
@@ -93,6 +109,73 @@
   <script src="{{ asset('js/docs.min.js') }}"></script>
   <script src="{{ asset('js/admin.js') }}"></script>
 {% endblock %}
+
+<script language="javascript">
+
+    $(document).ready(function ($e)
+    {
+        $("#mnuCustomerDashboard").on('click', function(e, data) {
+
+            var selItem = -1;
+            var window = $("#window");
+
+            window.show();
+
+            if (!window.data("kendoWindow")) {
+                window.kendoWindow({
+                    width: "450px",
+                    display: "block",
+                    resizable: false,
+                    draggable: false,
+                    title: "Find Customer",
+                    modal: true,
+                    actions: [
+                        "Close"
+                    ]
+                });
+            }
+
+            window.data("kendoWindow").center().open();
+        });
+
+        $("#btnSubmit").on('click', function(e, data)
+        {
+            window.location.href = "/customerDetail?customerId=" + selItem["customerId"];
+        });
+
+        // autocomplete with actions
+        $("#txtSearchCustomers").kendoAutoComplete({
+            select: function (e) {
+                selItem = this.dataItem(e.item.index());
+                $.ajax({
+                    type: 'GET',
+                    contentType: 'json',
+                    url: '/retrieveCustomer?customerId=' + selItem["customerId"],
+                    success: function(data, textStatus) {
+                        updateUIWithCustomer(data[0]);
+                    },
+                    error: function(xhr, textStatus, errorThrown) {
+                        alert(textStatus);
+                    }
+                });
+            },
+            minLength: 3,
+            dataTextField: "name", // JSON property name to use
+            dataSource: new kendo.data.DataSource({
+                type: "json", // specifies data protocol
+                pageSize: 10, // limits result set
+                transport: {
+                    read: {
+                        url: "/customerSearch",
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json"
+                    }
+                }
+            })
+        });
+    });
+
+</script>
 
 <section id="footer">
   <footer class="navbar hidden-xs">
