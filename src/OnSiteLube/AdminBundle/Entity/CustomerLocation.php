@@ -49,6 +49,11 @@ class CustomerLocation
      */
     private $notes;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Address")
+     * @ORM\JoinColumn(name="AddressId", referencedColumnName="id")
+     */
+    private $address;
 
     /**
      * Get id
@@ -150,5 +155,27 @@ class CustomerLocation
     public function getNotes()
     {
         return $this->notes;
+    }
+
+    /**
+     * Set address
+     *
+     * @param \OnSiteLube\AdminBundle\Entity\Address $address
+     *
+     * @return CustomerLocation
+     */
+    public function setAddress(\OnSiteLube\AdminBundle\Entity\Address $address = null) {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return \OnSiteLube\AdminBundle\Entity\Address
+     */
+    public function getAddress() {
+        return $this->address;
     }
 }

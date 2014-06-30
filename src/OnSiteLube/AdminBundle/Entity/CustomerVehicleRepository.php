@@ -12,4 +12,116 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomerVehicleRepository extends EntityRepository
 {
+
+    /**
+     * @return array
+     */
+    public function findAll()
+    {
+        $dql = "SELECT cv.id, cv.unitNumber, cl.name, a.address FROM OnSiteLubeAdminBundle:CustomerVehicle cv join cv.customerLocation cl join cl.address a";
+        $query = $this->getEntityManager()->createQuery($dql);
+        return $query->getResult();
+    }
+
+    /**
+     * @param $locationId
+     *
+     * @return array
+     */
+    public function findAllByLocationId($locationId)
+    {
+        $dql = "SELECT cv.id, cv.unitNumber, cl.name, a.address FROM OnSiteLubeAdminBundle:CustomerVehicle cv join cv.customerLocation cl join cl.address a where cl.id = :locationId";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameters(array('locationId' => $locationId));
+        return $query->getResult();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return array
+     */
+    public function findById($id)
+    {
+        $dql = "SELECT v.id as vehicleId, v.unitNumber, v.vin, v.tag, v.year, v.make, v.model, l.id as locationId, l.name as locationName ";
+        $dql .= "FROM OnSiteLubeAdminBundle:CustomerVehicle v join v.customerLocation l ";
+        $dql .= "where v.id = :vehicleId";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameters(array('vehicleId' => $id));
+        return $query->getResult();
+    }
+
+    /**
+     * @param $input
+     *
+     * @return CustomerVehicle
+     */
+    public function addCustomerVehicle($input)
+    {
+        $em = $this->getEntityManager();
+
+        $customerVehicle = new CustomerVehicle();
+        $customerLocation = $em->getRepository('OnSiteLubeAdminBundle:CustomerLocation')->find($input->vehicleLocation);
+
+        $customerVehicle->setUnitNumber($input->unitNumber);
+        $customerVehicle->setVIN($input->vin);
+        $customerVehicle->setTag($input->tag);
+        $customerVehicle->setYear($input->year);
+        $customerVehicle->setMake($input->make);
+        $customerVehicle->setModel($input->model);
+        $customerVehicle->setCustomerLocation($customerLocation);
+        $em->persist($customerVehicle);
+
+        $em->flush();
+
+        return $customerVehicle;
+    }
+
+    /**
+     * @param $input
+     *
+     * @return null|object
+     */
+    public function updateCustomerVehicle($input)
+    {
+        $em = $this->getEntityManager();
+
+        $customerVehicle = $em->getRepository('OnSiteLubeAdminBundle:CustomerVehicle')->find($input->vehicleId);
+        $customerLocation = $em->getRepository('OnSiteLubeAdminBundle:CustomerLocation')->find($input->vehicleLocation);
+
+        $customerVehicle->setUnitNumber($input->unitNumber);
+        $customerVehicle->setVIN($input->vin);
+        $customerVehicle->setTag($input->tag);
+        $customerVehicle->setYear($input->year);
+        $customerVehicle->setMake($input->make);
+        $customerVehicle->setModel($input->model);
+        $customerVehicle->setCustomerLocation($customerLocation);
+        $em->persist($customerVehicle);
+
+        $em->flush();
+
+        return $customerLocation;
+    }
+
+    /**
+     * @return array
+     */
+    public function findAllForAutoComplete()
+    {
+        $dql = "SELECT cv.id as vehicleId, cv.unitNumber ";
+        $dql .= "FROM OnSiteLubeAdminBundle:CustomerVehicle cv";
+        $query = $this->getEntityManager()->createQuery($dql);
+        return $query->getResult();
+    }
+
+
+    /**
+     * @param $service
+     *
+     * @return object
+     */
+    public static function findRepository($service)
+    {
+        return $service->getDoctrine()->getRepository('OnSiteLubeAdminBundle:CustomerVehicle');
+    }
 }

@@ -35,6 +35,18 @@ class CustomerRepository extends EntityRepository {
     return $query->getResult();
   }
 
+   /**
+    * @param $id
+    *
+    * @return array
+    */
+    public function findAllCustomers() {
+      $dql  = "SELECT c.id as customerId, c.name, a.city, a.state, a.postalCode, c.phone, c.taxable, c.active ";
+      $dql .= "FROM OnSiteLubeAdminBundle:Customer c join c.address a ";
+      $query = $this->getEntityManager()->createQuery($dql);
+      return $query->getResult();
+    }
+
   /**
    * @param $service
    *

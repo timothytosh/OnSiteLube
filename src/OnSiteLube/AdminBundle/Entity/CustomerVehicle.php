@@ -37,9 +37,9 @@ class CustomerVehicle
     /**
      * @var integer
      *
-     * @ORM\Column(name="LocationId", type="integer")
+     * @ORM\Column(name="CustomerLocationId", type="integer")
      */
-    private $locationId;
+    private $customerLocationId;
 
     /**
      * @var string
@@ -99,7 +99,13 @@ class CustomerVehicle
      * @ORM\Column(name="Parking", type="string", length=255)
      */
     private $parking;
-	
+
+    /**
+     * @ORM\ManyToOne(targetEntity="CustomerLocation")
+     * @ORM\JoinColumn(name="LocationId", referencedColumnName="id")
+     */
+    private $customerLocation;
+
     /**
      * Get id
      *
@@ -118,7 +124,7 @@ class CustomerVehicle
      */
     public function setLocationId($locationId)
     {
-        $this->locationId = $locationId;
+        $this->$locationId = $locationId;
 
         return $this;
     }
@@ -130,7 +136,7 @@ class CustomerVehicle
      */
     public function getLocationId()
     {
-        return $this->locationId;
+        return $this->$locationId;
     }
 
     /**
@@ -269,5 +275,28 @@ class CustomerVehicle
     public function getEngine()
     {
         return $this->engine;
+    }
+
+    /**
+     * Set customerLocation
+     *
+     * @param \OnSiteLube\AdminBundle\Entity\CustomerLocation $customerLocation
+     * @return CustomerVehicle
+     */
+    public function setCustomerLocation(\OnSiteLube\AdminBundle\Entity\CustomerLocation $customerLocation = null)
+    {
+        $this->$customerLocation = $customerLocation;
+
+        return $this;
+    }
+
+    /**
+     * Get companyLocation
+     *
+     * @return \OnSiteLube\AdminBundle\Entity\CompanyLocation
+     */
+    public function getCustomerLocation()
+    {
+        return $this->customerLocation;
     }
 }

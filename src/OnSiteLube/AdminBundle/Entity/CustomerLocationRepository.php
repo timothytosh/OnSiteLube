@@ -12,5 +12,103 @@ use Doctrine\ORM\EntityRepository;
  */
 class CustomerLocationRepository extends EntityRepository {
 
+    /**
+     * @return array
+     */
+    public function findAll() {
+        $dql = "SELECT c.id, c.name, a.id as addressId, a.address FROM OnSiteLubeAdminBundle:CustomerLocation c join c.address a";
+        $query = $this->getEntityManager()->createQuery($dql);
+        return $query->getResult();
+    }
+
+    /**
+     * @param $id
+     *
+     * @return array
+     */
+    public function findById($id) {
+        $dql  = "SELECT cl.id as locationId, cl.name, a.address, a.city, a.state, a.postalCode ";
+        $dql .= "FROM OnSiteLubeAdminBundle:CustomerLocation cl join cl.address a ";
+        $dql .= "where cl.id = :locationId";
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->setParameters(array('locationId' => $id));
+        return $query->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function findAllForAutoComplete() {
+        $dql  = "SELECT cl.id as locationId, cl.name ";
+        $dql .= "FROM OnSiteLubeAdminBundle:CustomerLocation cl";
+        $query = $this->getEntityManager()->createQuery($dql);
+        return $query->getResult();
+    }
+
+    /**
+     * @param $input
+     *
+     * @return CustomerLocation
+     */
+    public function addCustomerLocation($input) {
+        $em = $this->getEntityManager();
+
+        $customerLocation = new CustomerLocation();
+        $address = new Address();
+
+        $customerLocation->setName($input->name);
+        $customerLocation->setAddress($address);
+
+        $address = $customerLocation->getAddress();
+        $address->setAddress($input->address);
+        $address->setCity($input->city);
+        $address->setState($input->state);
+        $address->setPostalCode($input->postalCode);
+        $address->setCountry('United States');
+        $em->persist($address);
+
+        $em->persist($customerLocation);
+
+        $em->flush();
+
+        return $customerLocation;
+    }
+
+    /**
+     * @param $input
+     *
+     * @return null|object
+     */
+    public function updateCustomerLocation($input) {
+        $em = $this->getEntityManager();
+
+        $customerLocation = $em->getRepository('OnSiteLubeAdminBundle:CustomerLocation')->find($input->locationId);
+        $customerLocation->setName($input->name);
+
+        $address = $customerLocation->getAddress();
+        $address->setAddress($input->address);
+        $address->setCity($input->city);
+        $address->setState($input->state);
+        $address->setPostalCode($input->postalCode);
+        $address->setCountry('United States');
+        $em->persist($address);
+
+        $em->persist($customerLocation);
+
+        $em->flush();
+
+        return $customerLocation;
+    }
+
+
+    /**
+     * @param $service
+     *
+     * @return object
+     */
+    public static function findRepository($service) {
+        return $service->getDoctrine()->getRepository('OnSiteLubeAdminBundle:CustomerLocation');
+    }
+
 
 }

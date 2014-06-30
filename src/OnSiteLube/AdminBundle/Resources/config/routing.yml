@@ -159,3 +159,12 @@ on_site_lube_logout:
 on_site_lube_update_user:
     pattern:  /updateUser
     defaults: { _controller: OnSiteLubeAdminBundle:UserAccount:update }
+
+# CUSTOMER VEHICLES ACCOUNT ------------------------------------------------------------------------
+on_site_lube_customer_vehicles:
+    pattern:  /customerVehicles
+    defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:index }
+
+on_site_lube_findAllCustomerVehicles:
+    pattern:  /findAllCustomerVehicles
+    defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:findAll }

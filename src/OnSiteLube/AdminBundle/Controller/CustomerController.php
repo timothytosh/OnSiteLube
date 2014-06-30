@@ -23,7 +23,7 @@ class CustomerController extends Controller {
     if(!$session->get('UserAccount')) { //if login in session is not set
       return $this->render('OnSiteLubeLoginBundle:Default:index.html.twig');
     }
-    return $this->render('OnSiteLubeAdminBundle:Default:customerdetail.html.twig');
+    return $this->render('OnSiteLubeAdminBundle:Default:customerdashboard.html.twig');
   }
 
   /**
