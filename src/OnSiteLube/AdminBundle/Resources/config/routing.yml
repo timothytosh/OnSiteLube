@@ -165,6 +165,19 @@ on_site_lube_customer_vehicles:
     pattern:  /customerVehicles
     defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:index }
 
-on_site_lube_findAllCustomerVehicles:
-    pattern:  /findAllCustomerVehicles
+on_site_lube_findCustomerVehiclesById:
+    pattern:  /findVehiclesForCustomer
     defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:findAll }
+
+on_site_lube_updateCustomerVehicleById:
+    pattern:  /updateCustomerVehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:update }
+
+on_site_lube_createCustomerVehicle:
+    pattern:  /createCustomerVehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:create }
+
+on_site_lube_destroyCustomerVehicleById:
+    pattern:  /destroyCustomerVehicle
+    defaults: { _controller: OnSiteLubeAdminBundle:CustomerVehicle:destroy }
+

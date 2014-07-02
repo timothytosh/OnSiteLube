@@ -182,24 +182,27 @@
                     dataSource = new kendo.data.DataSource({
                         transport: {
                             read:  {
-                                url: "/findAllCustomerVehicles",
+                              url: "/findVehiclesForCustomer?customerId=" + customerId,
                                 dataType: "json"
                             },
                             update: {
-                                url: crudServiceBaseUrl + "/Products/Update",
-                                dataType: "jsonp"
+                              url: crudServiceBaseUrl + "/updateCustomerVehicle",
+                              data: "",
+                              dataType: "json"
                             },
                             destroy: {
-                                url: crudServiceBaseUrl + "/Products/Destroy",
-                                dataType: "jsonp"
+                              url: crudServiceBaseUrl + "/destroyCustomerVehicle",
+                              data: "",
+                              dataType: "json"
                             },
                             create: {
-                                url: crudServiceBaseUrl + "/Products/Create",
-                                dataType: "jsonp"
+                              url: crudServiceBaseUrl + "/createCustomerVehicle",
+                              data: "",
+                              dataType: "json"
                             },
                             parameterMap: function(options, operation) {
                                 if (operation !== "read" && options.models) {
-                                    return {models: kendo.stringify(options.models)};
+                                  return kendo.stringify(options.models);
                                 }
                             }
                         },
