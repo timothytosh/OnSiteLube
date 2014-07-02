@@ -3,7 +3,6 @@ on_site_lube_admin_homepage:
     pattern:  /dashboard
     defaults: { _controller: OnSiteLubeAdminBundle:Default:index }
 
-
 # LOGIN AUDIT LOG -------------------------------------------------------------------------------------
 on_site_lube_loginAuditLog:
     pattern:  /loginAudit
