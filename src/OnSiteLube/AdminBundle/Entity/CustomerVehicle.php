@@ -37,9 +37,25 @@ class CustomerVehicle
     /**
      * @var integer
      *
-     * @ORM\Column(name="CustomerLocationId", type="integer")
+     * @ORM\Column(name="LocationId", type="integer")
      */
-    private $customerLocationId;
+    private $locationId;
+
+  /**
+   * @return int
+   */
+  public function getCustomerLocationId()
+  {
+    return $this->$locationId;
+  }
+
+  /**
+   * @param int $customerLocationId
+   */
+  public function setCustomerLocationId($customerLocationId)
+  {
+    $this->$locationId = $customerLocationId;
+  }
 
     /**
      * @var string
@@ -99,6 +115,70 @@ class CustomerVehicle
      * @ORM\Column(name="Parking", type="string", length=255)
      */
     private $parking;
+
+  /**
+   * @return string
+   */
+  public function getModel()
+  {
+    return $this->model;
+  }
+
+  /**
+   * @param string $model
+   */
+  public function setModel($model)
+  {
+    $this->model = $model;
+  }
+
+  /**
+   * @return string
+   */
+  public function getParking()
+  {
+    return $this->parking;
+  }
+
+  /**
+   * @param string $parking
+   */
+  public function setParking($parking)
+  {
+    $this->parking = $parking;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getServiceScheduleId()
+  {
+    return $this->serviceScheduleId;
+  }
+
+  /**
+   * @param mixed $serviceScheduleId
+   */
+  public function setServiceScheduleId($serviceScheduleId)
+  {
+    $this->serviceScheduleId = $serviceScheduleId;
+  }
+
+  /**
+   * @return mixed
+   */
+  public function getCustomerId()
+  {
+    return $this->customerId;
+  }
+
+  /**
+   * @param mixed $customerId
+   */
+  public function setCustomerId($customerId)
+  {
+    $this->customerId = $customerId;
+  }
 
     /**
      * @ORM\ManyToOne(targetEntity="CustomerLocation")

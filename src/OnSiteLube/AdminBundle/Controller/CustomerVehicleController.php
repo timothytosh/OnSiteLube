@@ -2,6 +2,7 @@
 
   namespace OnSiteLube\AdminBundle\Controller;
 
+  use OnSiteLube\ServiceBundle\Utility;
   use Symfony\Bundle\FrameworkBundle\Controller\Controller;
   use OnSiteLube\AdminBundle\Entity\CustomerVehicleRepository;
   use Symfony\Component\HttpFoundation\Response;
@@ -43,7 +44,7 @@
       return $response;
     }
 
-    public function addAction(Request $request) {
+    public function createAction(Request $request) {
       $input = file_get_contents('php://input');
       $companyVehicle = json_decode($input);
       $companyVehicle = CompanyVehicleRepository::findRepository($this)->addCompanyVehicle($companyVehicle[0]);
@@ -54,9 +55,9 @@
 
     public function updateAction(Request $request) {
       $input = file_get_contents('php://input');
-      $companyVehicle = json_decode($input);
-      $companyVehicle = CompanyVehicleRepository::findRepository($this)->updateCompanyVehicle($companyVehicle[0]);
-      $response = new Response(json_encode($companyVehicle));
+      $customerVehicle = json_decode(Utility::cleanseKendoUIJSON($input));
+      $customerVehicle = CustomerVehicleRepository::findRepository($this)->updateCustomerVehicle($customerVehicle[0]);
+      $response = new Response(json_encode($customerVehicle));
       $response->headers->set('Content-Type', 'application/json');
       return $response;
     }

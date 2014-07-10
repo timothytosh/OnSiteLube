@@ -267,6 +267,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CompanyLocationController::findAllAction',  '_route' => 'on_site_lube_findAllCompanyLocation',);
         }
 
+        // on_site_lube_addServiceSchedule
+        if ($pathinfo === '/addServiceSchedule') {
+            return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\ServiceScheduleController::addAction',  '_route' => 'on_site_lube_addServiceSchedule',);
+        }
+
         // on_site_lube_retrieveCompanyVehicle
         if ($pathinfo === '/retrieveCompanyVehicle') {
             return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CompanyVehicleController::retrieveAction',  '_route' => 'on_site_lube_retrieveCompanyVehicle',);
@@ -344,6 +349,31 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
         // on_site_lube_update_user
         if ($pathinfo === '/updateUser') {
             return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\UserAccountController::updateAction',  '_route' => 'on_site_lube_update_user',);
+        }
+
+        // on_site_lube_customer_vehicles
+        if ($pathinfo === '/customerVehicles') {
+            return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CustomerVehicleController::indexAction',  '_route' => 'on_site_lube_customer_vehicles',);
+        }
+
+        // on_site_lube_findCustomerVehiclesById
+        if ($pathinfo === '/findVehiclesForCustomer') {
+            return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CustomerVehicleController::findAllAction',  '_route' => 'on_site_lube_findCustomerVehiclesById',);
+        }
+
+        // on_site_lube_updateCustomerVehicleById
+        if ($pathinfo === '/updateCustomerVehicle') {
+            return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CustomerVehicleController::updateAction',  '_route' => 'on_site_lube_updateCustomerVehicleById',);
+        }
+
+        // on_site_lube_createCustomerVehicle
+        if ($pathinfo === '/createCustomerVehicle') {
+            return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CustomerVehicleController::createAction',  '_route' => 'on_site_lube_createCustomerVehicle',);
+        }
+
+        // on_site_lube_destroyCustomerVehicleById
+        if ($pathinfo === '/destroyCustomerVehicle') {
+            return array (  '_controller' => 'OnSiteLube\\AdminBundle\\Controller\\CustomerVehicleController::destroyAction',  '_route' => 'on_site_lube_destroyCustomerVehicleById',);
         }
 
         // on_site_lube_login_homepage

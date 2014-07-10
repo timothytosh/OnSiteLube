@@ -86,21 +86,23 @@ class CustomerVehicleRepository extends EntityRepository
     {
         $em = $this->getEntityManager();
 
-        $customerVehicle = $em->getRepository('OnSiteLubeAdminBundle:CustomerVehicle')->find($input->vehicleId);
-        $customerLocation = $em->getRepository('OnSiteLubeAdminBundle:CustomerLocation')->find($input->vehicleLocation);
+        $customerVehicle = $em->getRepository('OnSiteLubeAdminBundle:CustomerVehicle')->find($input->id);
+        $customerLocation = $em->getRepository('OnSiteLubeAdminBundle:CustomerLocation')->find($locationId);
 
+        //$customerVehicle->setCustomerId(1);
+        //$customerVehicle->setServiceScheduleId(1);
         $customerVehicle->setUnitNumber($input->unitNumber);
-        $customerVehicle->setVIN($input->vin);
-        $customerVehicle->setTag($input->tag);
-        $customerVehicle->setYear($input->year);
-        $customerVehicle->setMake($input->make);
-        $customerVehicle->setModel($input->model);
-        $customerVehicle->setCustomerLocation($customerLocation);
+        //$customerVehicle->setVIN($input->vin);
+        //$customerVehicle->setTag($input->tag);
+        //$customerVehicle->setYear($input->year);
+        //$customerVehicle->setMake($input->make);
+        //$customerVehicle->setModel($input->model);
+        //$customerVehicle->setCustomerLocation($customerLocation);
         $em->persist($customerVehicle);
 
         $em->flush();
 
-        return $customerLocation;
+        return $customerVehicle;
     }
 
     /**
